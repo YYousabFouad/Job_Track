@@ -1,5 +1,5 @@
 "use strict";
-
+//==============Change Themes=================================
 const themeToggleBtn = document.getElementById("themeToggleBtn");
 const htmlElement = document.documentElement;
 
@@ -14,3 +14,25 @@ themeToggleBtn.addEventListener("click", () => {
   htmlElement.setAttribute("data-theme", newTheme);
   localStorage.setItem("jobtrack_theme", newTheme);
 });
+
+//=====================Load and Check Applicatoins=====================
+
+let applications = [];
+
+const saveApplications = function (applications) {
+  localStorage.setItem("applications", JSON.stringify(applications));
+};
+
+const loadApplicatoins = function () {
+  return JSON.parse(localStorage.getItem("applications"));
+};
+
+const checkingExistingData = function () {
+  const data = loadApplicatoins();
+
+  if (data) {
+    applications = data;
+  }
+};
+
+checkingExistingData();
