@@ -142,7 +142,6 @@ const scrollingTO = function (section) {
     behavior: "smooth",
   });
 };
-const statisticsSection = document.querySelector(".statistics");
 const settingsSection = document.querySelector(".settings");
 //For dashboard
 const dashboardLink = document.querySelector(".nav-link-dashboard");
@@ -161,4 +160,13 @@ const applicationsSeciton = document.querySelector("#applications");
 applicationsLink.addEventListener("click", function (e) {
   e.preventDefault();
   scrollingTO(applicationsSeciton);
+});
+
+//For Statistics
+const statisticsLink = document.querySelector(".nav-link-statistics");
+const statisticsSection = document.querySelector("#statistics");
+
+statisticsLink.addEventListener("click", function (e) {
+  e.preventDefault();
+  scrollingTO(statisticsSection);
 });
