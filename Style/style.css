@@ -202,16 +202,10 @@ body {
   color: var(--text-muted);
   font-weight: 600;
   font-size: 0.9rem;
-  transition: color 0.2s ease;
+  transition: color 0.3s ease;
   position: relative;
 }
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--text-main);
-}
-
-.nav-link.active::after {
+.nav-link::after {
   content: "";
   position: absolute;
   bottom: -0.5rem;
@@ -220,6 +214,25 @@ body {
   height: 2px;
   border-radius: 2px;
   background: var(--accent-gradient);
+
+  /* Start fully hidden/collapsed at scale 0 */
+  transform: scaleX(0);
+  transform-origin: center; /* Set to 'left' if you prefer it growing left-to-right */
+
+  /* Smooth transform transition */
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+/* Expand the underline on hover and active states */
+.nav-link:hover::after,
+.nav-link.active::after {
+  transform: scaleX(1);
 }
 
 .nav-actions {
