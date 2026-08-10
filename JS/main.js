@@ -134,7 +134,7 @@ const scrollingTO = function (section) {
 
   const distance = Math.abs(sectionCoord - window.scrollY);
 
-  if (distance <= 200) {
+  if (distance <= 150) {
     return;
   }
 
