@@ -188,7 +188,7 @@ body {
   color: var(--text-main);
   letter-spacing: -0.03em;
   background: var(--accent-gradient);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -783,7 +783,7 @@ body {
   font-weight: 800;
   margin: 0.5rem 0;
   background: var(--accent-gradient);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
