@@ -128,21 +128,37 @@ scrollDownBtn.addEventListener("click", function (e) {
 });
 
 //======================Scroll-to-down for NavBar=============================================
-const dashboardSection = document.querySelector(".dashboard");
-const applicationsSection = document.querySelector(".applications");
+//Main function to implement on the four navbar tabs
+const scrollingTO = function (section) {
+  const sectionCoord = section.getBoundingClientRect().top + window.scrollY;
+
+  const distance = Math.abs(sectionCoord - window.scrollY);
+
+  if (distance <= 200) {
+    return;
+  }
+
+  section.scrollIntoView({
+    behavior: "smooth",
+  });
+};
 const statisticsSection = document.querySelector(".statistics");
 const settingsSection = document.querySelector(".settings");
+//For dashboard
+const dashboardLink = document.querySelector(".nav-link-dashboard");
+const dashboardSection = document.querySelector("#dashboard");
 
-const scrollDown = function (section) {
-  const sectionCoord = section.getBoundingClientRect().top + window.scrollY;
-  if (sectionCoord === window.scrollY) {
-    return;
-  } else {
-    section.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
-dashboardSection.addEventListener("click", function (e) {
+dashboardLink.addEventListener("click", function (e) {
   e.preventDefault();
-  scrollDown(dashboardSection);
+
+  scrollingTO(dashboardSection);
+});
+
+//For Applications
+const applicationsLink = document.querySelector(".nav-link-applications");
+const applicationsSeciton = document.querySelector("#applications");
+
+applicationsLink.addEventListener("click", function (e) {
+  e.preventDefault();
+  scrollingTO(applicationsSeciton);
 });
