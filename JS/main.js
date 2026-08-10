@@ -139,7 +139,7 @@ const scrollingTO = function (section) {
 
   const distance = Math.abs(sectionCoord - window.scrollY);
 
-  if (distance <= 150) {
+  if (distance <= 110) {
     return;
   }
 
@@ -194,4 +194,11 @@ settingsLink.addEventListener("click", function (e) {
   applicationsLink.classList.remove("active");
   statisticsLink.classList.remove("active");
   settingsLink.classList.add("active");
+});
+
+const observer = new IntersectionObserver((entries) => {
+  observer.observe(dashboardSection);
+  observer.observe(applicationsSeciton);
+  observer.observe(statisticsSection);
+  observer.observe(settingsSection);
 });
