@@ -47,7 +47,9 @@ const powerRingFill = document.getElementById("powerRingFill");
 const RING_CIRCUMFERENCE = 263.89;
 
 function updateScrollPower() {
+  // to know how much i far from the top of the page
   const scrollTop = window.scrollY;
+  //Calculating total scrollable distance
   const totalHeight =
     document.documentElement.scrollHeight - window.innerHeight;
 
