@@ -142,7 +142,6 @@ const scrollingTO = function (section) {
     behavior: "smooth",
   });
 };
-const settingsSection = document.querySelector(".settings");
 //For dashboard
 const dashboardLink = document.querySelector(".nav-link-dashboard");
 const dashboardSection = document.querySelector("#dashboard");
@@ -169,4 +168,13 @@ const statisticsSection = document.querySelector("#statistics");
 statisticsLink.addEventListener("click", function (e) {
   e.preventDefault();
   scrollingTO(statisticsSection);
+});
+
+//For Settings
+const settingsLink = document.querySelector(".nav-link-settings");
+const settingsSection = document.querySelector("#settings");
+
+settingsLink.addEventListener("click", function (e) {
+  e.preventDefault();
+  scrollingTO(settingsSection);
 });
