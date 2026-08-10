@@ -101,3 +101,26 @@ if (scrollTopBtn) {
     });
   });
 }
+
+//============================Scroll-to-down===================================
+
+const scrollDownBtn = document.querySelector("#scrollDownBtn");
+
+scrollDownBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  const section1 = document.querySelector("#applications");
+  const section1coord = section1.getBoundingClientRect();
+
+  //====3 Different ways of creating scrolling================
+  // window.scrollTo(
+  //   section1coord.left + window.scrollX,
+  //   section1coord.top + window.scrollY,
+  // );
+  // window.scrollTo({
+  //   left: section1coord.left + window.scrollX,
+  //   top: section1coord.top + window.scrollY,
+  //   behavior: "smooth",
+  // });
+
+  section1.scrollIntoView({ behavior: "smooth" });
+});
