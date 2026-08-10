@@ -1,139 +1,323 @@
-# JobTrack
+JobTrack --- Version 1
 
-> A modern job application tracker built with Vanilla JavaScript.
+JobTrack is a simple Job Application Tracker that helps usersorganize and keep track of the jobs and internships they apply to.
 
-## 📌 Project Idea
+Version 1 focuses on the frontend and JavaScript fundamentals. Ituses HTML, CSS, JavaScript, and LocalStorage.
 
-**JobTrack** is a web application designed to help students, graduates, and job seekers organize and track their job and internship applications in one place.
+The goal is to build a useful project while practicing the JavaScriptand DOM concepts from the course.
 
-Instead of keeping applications in scattered notes, spreadsheets, browser tabs, or messages, JobTrack provides a simple dashboard where users can record an application, track its current status, search and filter applications, and see useful statistics about their job search.
+🎯 Version 1 Goal
 
-The main goal of the project is to build a **real-world, interactive JavaScript application** rather than a small demonstration project.
+The first version should allow the user to:
 
----
+View a dashboard
 
-## 🎯 Problem
+View their applications
 
-When applying for many jobs or internships, it is easy to lose track of:
+Add an application
 
-- Which companies you applied to
-- Which position you applied for
-- When you applied
-- Which applications are still waiting for a response
-- Which companies invited you to an interview
-- Which applications were rejected
-- Which opportunities resulted in an offer
+Edit an application
 
-JobTrack solves this problem by keeping all application information organized in one dashboard.
+Delete an application
 
----
+Search applications
 
-## 💡 Solution
+Filter applications by status
 
-JobTrack allows the user to:
+Sort applications
 
-1. Add a new job or internship application.
-2. Store important information about the application.
-3. View all applications from one dashboard.
-4. Change the status of an application.
-5. Edit application information.
-6. Delete applications.
-7. Search for specific applications.
-8. Filter applications by status.
-9. Sort applications.
-10. View statistics about the job search.
-11. Save application data locally so it remains available after closing the browser.
+View basic statistics
 
----
+Save applications in LocalStorage
 
-## 🔄 How the Application Works
+Keep the selected theme after refreshing
 
-The core workflow is:
+Navigate smoothly between sections
 
-```text
-User Action
-    ↓
-JavaScript handles the event
-    ↓
-Application data is updated
-    ↓
-Data is saved
-    ↓
-The UI is rendered again
-    ↓
-Statistics are updated
-```
+No backend or real authentication is included in Version 1.
 
-For example, when a user changes an application from **Applied** to **Interview**:
+🖥️ Page Structure
 
-```text
-Change Status
-     ↓
-Find Application
-     ↓
-Update Status
-     ↓
-Save Data
-     ↓
-Re-render Applications
-     ↓
-Update Statistics
-```
+Version 1 uses one HTML page:
 
-The application data acts as the source of truth, while the user interface reflects that data.
+index.html
+│
+├── Navbar
+│
+├── Dashboard
+│
+├── Applications
+│
+├── Statistics
+│
+├── Settings
+│
+└── Footer
 
----
+The page is intentionally organized into multiple sections so we canpractice DOM navigation and smooth scrolling.
 
-## 📊 Application Statuses
+1. Navigation Bar
 
-Each application can have a status such as:
+The navbar should contain:
 
-- **Applied**
-- **Screening**
-- **Interview**
-- **Offer**
-- **Rejected**
+JobTrack logo
 
-This allows the user to understand where each application currently stands.
+Dashboard link
 
----
+Applications link
 
-## 🗂️ Application Information
+Statistics link
 
-An application can contain information such as:
+Settings link
 
-```text
+Theme toggle
+
+User/profile area
+
+Navigation:
+
+Dashboard → #dashboard
+Applications → #applications
+Statistics → #statistics
+Settings → #settings
+
+The navigation links should eventually use JavaScript to implementsmooth scrolling.
+
+2. Dashboard
+
+The Dashboard is the first section the user sees.
+
+Content
+
+Hero
+
+Include:
+
+Welcome message
+
+Short description
+
+Add Application button
+
+Scroll-down button
+
+Example:
+
+Welcome back 👋
+
+Organize and track your job applications
+in one place.
+
+[ + Add Application ]
+
+Summary Cards
+
+Display:
+
+Total Applications
+Applied
+Interviews
+Offers
+Rejected
+
+Example:
+
+Total Applications 12
+Applied 6
+Interviews 3
+Offers 1
+Rejected 2
+
+These values should eventually be calculated from the actualapplications array.
+
+3. Applications
+
+This is the main section of JobTrack.
+
+Controls
+
+Include:
+
+[ Search applications... ]
+
+[ All ]
+[ Applied ]
+[ Interview ]
+[ Offer ]
+[ Rejected ]
+
+[ Sort ]
+
+Application Cards
+
+Each card should contain:
+
 Company
 Position
 Status
 Location
-Date Applied
-Job URL
-Salary
+Work type
+Date applied
 Notes
-Contact Information
-```
+View Job
+Edit
+Delete
 
 Example:
 
-```text
+┌─────────────────────────────────┐
+│ Vercel │
+│ Frontend Engineer │
+│ │
+│ Status: Interview │
+│ Location: Remote │
+│ Applied: Aug 2, 2026 │
+│ │
+│ Technical interview next week. │
+│ │
+│ View Job Edit Delete │
+└─────────────────────────────────┘
+
+Use several dummy applications during development so the application hasrealistic content.
+
+Suggested examples:
+
+Vercel Frontend Engineer Interview
+GitHub Full Stack Developer Offer
+Microsoft Backend Engineer Applied
+Google React Intern Applied
+Amazon Software Engineer Rejected
+Stripe Frontend Intern Screening
+
+4. Add Application
+
+The user should be able to open a form/modal to create a newapplication.
+
+Form
+
+The first version can contain:
+
+Company Name
+Position
+Status
+Location
+Work Type
+Date Applied
+Job URL
+Notes
+
+Example:
+
 Company: Microsoft
-Position: Frontend Developer Intern
-Status: Interview
-Location: Remote
-Date Applied: August 8, 2026
-Notes: Technical interview next week
-```
+Position: Frontend Intern
+Status: Applied
+Location: Cairo
+Work Type: Hybrid
+Date Applied: August 10, 2026
 
----
+When the user submits:
 
-## 📈 Dashboard & Statistics
+Form Submit
+↓
+Create application object
+↓
+Add object to applications[]
+↓
+Save to LocalStorage
+↓
+Render applications
+↓
+Update statistics
 
-The dashboard will provide a quick overview of the user's job search.
+5. Edit Application
 
-Possible statistics include:
+Each application should have an Edit button.
 
-```text
+Workflow:
+
+Click Edit
+↓
+Open form
+↓
+Show existing data
+↓
+User changes information
+↓
+Update application object
+↓
+Save to LocalStorage
+↓
+Render again
+
+6. Delete Application
+
+Each application should have a Delete button.
+
+Workflow:
+
+Click Delete
+↓
+Find application
+↓
+Remove it from applications[]
+↓
+Save to LocalStorage
+↓
+Render again
+↓
+Update statistics
+
+7. Search
+
+The user should be able to search applications by information such as:
+
+Company
+
+Position
+
+Location
+
+Example:
+
+Search: React
+
+Possible results:
+
+Google React Intern
+Meta React Developer
+Startup X React Engineer
+
+8. Filter
+
+The user should be able to filter by status:
+
+All
+Applied
+Interview
+Offer
+Rejected
+
+Example:
+
+User selects Interview
+↓
+Show only Interview applications
+
+9. Sort
+
+Version 1 can include:
+
+Newest
+Oldest
+Company A-Z
+Company Z-A
+
+10. Statistics
+
+The Statistics section should show useful information calculated fromthe applications.
+
+Include:
+
 Total Applications
 Applied
 Interviews
@@ -142,213 +326,318 @@ Rejected
 Response Rate
 Interview Rate
 Offer Rate
-```
 
-These statistics are calculated from the application's data rather than being manually entered.
+The statistics should eventually be calculated from:
 
----
+applications[]
 
-## 🔎 Search, Filtering & Sorting
+rather than being hard-coded.
 
-JobTrack will allow users to quickly find applications.
+11. Settings
 
-### Search
+Version 1 Settings should remain simple.
 
-Search by information such as:
+Include:
 
-- Company
-- Position
-- Location
-- Notes
+Theme preference
 
-### Filtering
+Export data
 
-Filter applications by status:
+Clear all data
 
-```text
-All
-Applied
-Screening
-Interview
-Offer
-Rejected
-```
+The theme should be saved in LocalStorage.
 
-### Sorting
+Application data should also be saved in LocalStorage.
 
-Applications can be sorted by:
+💾 LocalStorage
 
-- Newest
-- Oldest
-- Company name
-- Position
+LocalStorage is the persistence layer for Version 1.
 
----
+Application data
 
-## 💾 Data Persistence
-
-JobTrack will use **LocalStorage** to save application data in the browser.
-
-The basic flow is:
-
-```text
-Application Changes
-       ↓
-Applications Array
-       ↓
+applications[]
+↓
+JSON.stringify()
+↓
 LocalStorage
-```
 
-When the user opens JobTrack again:
+When JobTrack opens:
 
-```text
 LocalStorage
-      ↓
-Load Saved Data
-      ↓
-Applications Array
-      ↓
-Render Dashboard
-```
+↓
+getItem()
+↓
+JSON.parse()
+↓
+applications[]
 
-This means the user's applications are not lost when the page is closed.
+Startup workflow
 
----
+Open JobTrack
+↓
+Check LocalStorage
+↓
+Saved applications?
+/ \
+ YES NO
+↓ ↓
+Load []
+\ /
+↓
+applications[]
+↓
+Render UI
 
-## 🧠 Main JavaScript Concepts Practiced
+🧠 Main Data Structure
 
-This project is intentionally designed to reinforce important JavaScript and DOM concepts.
+The application state is:
 
-### DOM Manipulation
+applications[]
 
-- Selecting elements
-- Creating elements
-- Removing elements
-- Changing classes
-- Updating content
-- DOM traversal
+Each application is an object containing information such as:
 
-### Events
+id
+company
+position
+status
+location
+workType
+dateApplied
+jobUrl
+notes
 
-- Event listeners
-- Event propagation
-- Event delegation
-- Form events
-- Input events
-- Click events
+A future version can add more properties.
 
-### Arrays
+🌐 Smooth Scrolling
 
-- `map()`
-- `filter()`
-- `find()`
-- `findIndex()`
-- `sort()`
-- `reduce()`
+Version 1 should have several sections on the same page:
 
-### JavaScript Concepts
+Dashboard
+↓
+Applications
+↓
+Statistics
+↓
+Settings
 
-- Objects
-- Arrays
-- Functions
-- Modules
-- Destructuring
-- Spread syntax
-- Template literals
-- Dates
-- LocalStorage
-- JSON
+Navigation links should move between these sections.
 
-### Browser APIs
+Also include:
 
-- DOM API
-- LocalStorage API
+Scroll-down button
 
----
+Back-to-top button
 
-## 🛠️ Technologies
+The purpose is to practice:
 
-### Current Version
+getElementById()
 
-- HTML5
-- CSS3
-- Vanilla JavaScript (ES6+)
-- DOM API
-- LocalStorage
+querySelector()
 
----
+addEventListener()
 
-## 🗺️ Project Roadmap
+scrollIntoView()
 
-### Phase 1 — Foundation
+DOM events
 
-- [ ] Create project structure
-- [ ] Build dashboard UI
-- [ ] Create application data structure
-- [ ] Render applications dynamically
+Event delegation
 
-### Phase 2 — Application Management
+🎨 UI Requirements
 
-- [ ] Add application
-- [ ] Edit application
-- [ ] Delete application
-- [ ] Change application status
-- [ ] Validate forms
+Version 1 should be:
 
-### Phase 3 — User Experience
+Clean
 
-- [ ] Search
-- [ ] Filtering
-- [ ] Sorting
-- [ ] Tabs
-- [ ] Application details modal
-- [ ] Responsive design
+Modern
 
-### Phase 4 — Statistics
+Responsive
 
-- [ ] Application count
-- [ ] Status statistics
-- [ ] Response rate
-- [ ] Interview rate
-- [ ] Offer rate
-- [ ] Charts
+Easy to navigate
 
-### Phase 5 — Persistence
+Consistent with the JobTrack logo
 
-- [ ] Save applications to LocalStorage
-- [ ] Load applications on startup
-- [ ] Handle invalid stored data
+Available in dark and light themes
 
----
+Focus on usability rather than excessive animations.
 
-## 🎓 Learning Goal
+📚 JavaScript Concepts Practiced
 
-JobTrack is not only a portfolio project.
+Version 1 should give practice with:
 
-It is also a learning project designed to develop the ability to build a complete application from an idea.
+Data
 
-The project focuses on understanding:
+Arrays
 
-```text
-User
- ↓
-Interface
- ↓
+Objects
+
+Array methods
+
+State management
+
+LocalStorage
+
+setItem()
+
+getItem()
+
+JSON serialization
+
+JSON parsing
+
+DOM
+
+Selecting elements
+
+Creating elements
+
+Deleting elements
+
+Changing text/content
+
+Attributes
+
+Classes
+
+Dataset attributes
+
 Events
- ↓
-JavaScript Logic
- ↓
-Application State
- ↓
-Data Persistence
- ↓
-UI Update
-```
 
-The goal is to understand **why each part exists and how the parts communicate**, rather than simply copying a finished application.
+Click
 
----
+Input
 
-## 📄 License
+Change
 
-This project is created for learning and portfolio development.
+Submit
+
+Scroll
+
+Navigation
+
+Event delegation
+
+Smooth scrolling
+
+DOM traversal
+
+Browser APIs
+
+LocalStorage
+
+🔄 Complete Version 1 Workflow
+
+                    OPEN JOBTRACK
+                         ↓
+                 Load LocalStorage
+                         ↓
+              Existing applications?
+                    /          \
+                  YES           NO
+                   ↓             ↓
+                 Load          Start []
+                   \             /
+                    ↓           ↓
+                     applications[]
+                           ↓
+                     Render Dashboard
+                           ↓
+                 ┌─────────┼─────────┐
+                 ↓         ↓         ↓
+               Add       Search    Filter
+                 ↓         ↓         ↓
+               Edit      Sort      Delete
+                 \         |         /
+                  \        |        /
+                   ↓       ↓       ↓
+                  Update applications[]
+                           ↓
+                  Save LocalStorage
+                           ↓
+                     Render UI
+                           ↓
+                  Update Statistics
+
+📁 Suggested Project Structure
+
+JobTrack/
+│
+├── HTML/
+│ └── index.html
+│
+├── CSS/
+│ └── style.css
+│
+├── JS/
+│ └── main.js
+│
+├── assets/
+│ ├── images/
+│ ├── icons/
+│ └── logo/
+│
+├── README.md
+└── .gitignore
+
+🚧 Version 1 --- What Is NOT Included
+
+To keep Version 1 focused, do not add:
+
+Backend
+
+Database
+
+Real authentication
+
+User registration
+
+Password management
+
+API
+
+React
+
+TypeScript
+
+React Native
+
+Those can be future versions.
+
+🏆 Version 1 Success Criteria
+
+Version 1 is complete when the user can:
+
+✓ Open JobTrack
+✓ Navigate between sections
+✓ Toggle dark/light mode
+✓ Add an application
+✓ See the application immediately
+✓ Refresh the page
+✓ Still see the application
+✓ Edit an application
+✓ Delete an application
+✓ Search applications
+✓ Filter applications
+✓ Sort applications
+✓ See updated statistics
+✓ Clear stored data
+
+🚀 Future Versions
+
+After Version 1 is stable:
+
+Version 1
+HTML + CSS + JavaScript + LocalStorage
+↓
+Version 2
+Backend + Database + Authentication
+↓
+Version 3
+React
+↓
+Version 4
+React + TypeScript
+↓
+Version 5
+React Native
+
+The goal is to keep improving the same project as your skills grow.
