@@ -129,6 +129,11 @@ scrollDownBtn.addEventListener("click", function (e) {
 
 //======================Scroll-to-down for NavBar=============================================
 //Main function to implement on the four navbar tabs
+const dashboardLink = document.querySelector(".nav-link-dashboard");
+const applicationsLink = document.querySelector(".nav-link-applications");
+const statisticsLink = document.querySelector(".nav-link-statistics");
+const settingsLink = document.querySelector(".nav-link-settings");
+
 const scrollingTO = function (section) {
   const sectionCoord = section.getBoundingClientRect().top + window.scrollY;
 
@@ -143,38 +148,50 @@ const scrollingTO = function (section) {
   });
 };
 //For dashboard
-const dashboardLink = document.querySelector(".nav-link-dashboard");
 const dashboardSection = document.querySelector("#dashboard");
 
 dashboardLink.addEventListener("click", function (e) {
   e.preventDefault();
 
   scrollingTO(dashboardSection);
+  dashboardLink.classList.add("active");
+  applicationsLink.classList.remove("active");
+  statisticsLink.classList.remove("active");
+  settingsLink.classList.remove("active");
 });
 
 //For Applications
-const applicationsLink = document.querySelector(".nav-link-applications");
 const applicationsSeciton = document.querySelector("#applications");
 
 applicationsLink.addEventListener("click", function (e) {
   e.preventDefault();
   scrollingTO(applicationsSeciton);
+  dashboardLink.classList.remove("active");
+  applicationsLink.classList.add("active");
+  statisticsLink.classList.remove("active");
+  settingsLink.classList.remove("active");
 });
 
 //For Statistics
-const statisticsLink = document.querySelector(".nav-link-statistics");
 const statisticsSection = document.querySelector("#statistics");
 
 statisticsLink.addEventListener("click", function (e) {
   e.preventDefault();
   scrollingTO(statisticsSection);
+  dashboardLink.classList.remove("active");
+  applicationsLink.classList.remove("active");
+  statisticsLink.classList.add("active");
+  settingsLink.classList.remove("active");
 });
 
 //For Settings
-const settingsLink = document.querySelector(".nav-link-settings");
 const settingsSection = document.querySelector("#settings");
 
 settingsLink.addEventListener("click", function (e) {
   e.preventDefault();
   scrollingTO(settingsSection);
+  dashboardLink.classList.remove("active");
+  applicationsLink.classList.remove("active");
+  statisticsLink.classList.remove("active");
+  settingsLink.classList.add("active");
 });
