@@ -104,7 +104,7 @@ if (scrollTopBtn) {
   });
 }
 
-//============================Scroll-to-down===================================
+//============================Scroll-to-down Button===================================
 
 const scrollDownBtn = document.querySelector("#scrollDownBtn");
 
@@ -125,4 +125,24 @@ scrollDownBtn.addEventListener("click", function (e) {
   // });
 
   section1.scrollIntoView({ behavior: "smooth" });
+});
+
+//======================Scroll-to-down for NavBar=============================================
+const dashboardSection = document.querySelector(".dashboard");
+const applicationsSection = document.querySelector(".applications");
+const statisticsSection = document.querySelector(".statistics");
+const settingsSection = document.querySelector(".settings");
+
+const scrollDown = function (section) {
+  const sectionCoord = section.getBoundingClientRect().top + window.scrollY;
+  if (sectionCoord === window.scrollY) {
+    return;
+  } else {
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
+dashboardSection.addEventListener("click", function (e) {
+  e.preventDefault();
+  scrollDown(dashboardSection);
 });
