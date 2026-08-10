@@ -195,10 +195,57 @@ settingsLink.addEventListener("click", function (e) {
   statisticsLink.classList.remove("active");
   settingsLink.classList.add("active");
 });
+// =====================================================
+// Active Navbar Link While Scrolling
+// =====================================================
 
-const observer = new IntersectionObserver((entries) => {
-  observer.observe(dashboardSection);
-  observer.observe(applicationsSeciton);
-  observer.observe(statisticsSection);
-  observer.observe(settingsSection);
-});
+const navbar = document.querySelector(".navbar");
+
+const navSectionMap = new Map([
+  [dashboardSection, dashboardLink],
+  [applicationsSeciton, applicationsLink],
+  [statisticsSection, statisticsLink],
+  [settingsSection, settingsLink],
+]);
+
+// Remove active from all links
+const removeActiveLinks = function () {
+  dashboardLink.classList.remove("active");
+  applicationsLink.classList.remove("active");
+  statisticsLink.classList.remove("active");
+  settingsLink.classList.remove("active");
+};
+
+// Create observer
+const observer = new IntersectionObserver(
+  function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+
+      const section = entry.target;
+
+      const correspondingLink = navSectionMap.get(section);
+
+      if (!correspondingLink) return;
+
+      removeActiveLinks();
+
+      correspondingLink.classList.add("active");
+    });
+  },
+  {
+    root: null,
+
+    // Create a detection area near the top
+    // of the viewport, below the sticky navbar.
+    rootMargin: `-${navbar.offsetHeight}px 0px -70% 0px`,
+
+    threshold: 0,
+  },
+);
+
+// Start observing every section
+observer.observe(dashboardSection);
+observer.observe(applicationsSeciton);
+observer.observe(statisticsSection);
+observer.observe(settingsSection);

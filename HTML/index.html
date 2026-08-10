@@ -483,26 +483,163 @@
       <!-- 4. SETTINGS SECTION -->
       <section id="settings" class="settings-section">
         <div class="section-header">
-          <h2 class="section-title">Settings & Data Persistence</h2>
+          <h2 class="section-title">Settings & Preferences</h2>
           <p class="section-subtitle">
-            Manage your browser's LocalStorage data, export applications, or
-            reset workspace state.
+            Configure your profile, app appearance, data persistence, and
+            default views.
           </p>
         </div>
 
-        <div class="app-card settings-card">
-          <h3 class="settings-card-title">Data Management</h3>
-          <p class="card-detail" style="margin-bottom: 1rem">
-            JobTrack saves all your records directly inside browser
-            LocalStorage.
-          </p>
-          <div class="settings-actions">
-            <button class="btn btn-secondary" id="exportDataBtn">
-              Export Data (JSON)
-            </button>
-            <button class="btn btn-danger" id="clearDataBtn">
-              Clear All Data
-            </button>
+        <div class="settings-grid">
+          <!-- Card 1: User Profile Settings -->
+          <div class="app-card settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">👤</div>
+              <div>
+                <h3 class="settings-card-title">User Profile</h3>
+                <p class="card-detail">
+                  Manage how your name and avatar appear across JobTrack.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-group">
+                <label for="settingUserName">Full Name</label>
+                <input
+                  type="text"
+                  id="settingUserName"
+                  class="search-input"
+                  value="Yosab Fouad"
+                />
+              </div>
+              <div class="form-group">
+                <label for="settingUserInitials">Avatar Initials</label>
+                <input
+                  type="text"
+                  id="settingUserInitials"
+                  class="search-input"
+                  value="YF"
+                  maxlength="3"
+                />
+              </div>
+            </div>
+            <div class="settings-card-footer">
+              <button class="btn btn-primary" id="saveProfileBtn">
+                Save Profile
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Appearance & UI Preferences -->
+          <div class="app-card settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">🎨</div>
+              <div>
+                <h3 class="settings-card-title">Appearance & Display</h3>
+                <p class="card-detail">
+                  Customize visual theme choices and dynamic behavior.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">Dark Theme</span>
+                  <span class="toggle-desc"
+                    >Switch between deep dark mode and crisp light theme.</span
+                  >
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingThemeToggle" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">Compact Cards</span>
+                  <span class="toggle-desc"
+                    >Reduce application card padding for denser information
+                    views.</span
+                  >
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingCompactToggle" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Default Job Search Preferences -->
+          <div class="app-card settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">⚙️</div>
+              <div>
+                <h3 class="settings-card-title">Tracker Defaults</h3>
+                <p class="card-detail">
+                  Set your preferred initial filters and currency indicators.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-group">
+                <label for="settingDefaultSort">Default Sort Order</label>
+                <select
+                  id="settingDefaultSort"
+                  class="sort-dropdown"
+                  style="width: 100%"
+                >
+                  <option value="newest">Sort: Newest</option>
+                  <option value="oldest">Sort: Oldest</option>
+                  <option value="company">Company (A-Z)</option>
+                  <option value="position">Position (A-Z)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="settingCurrency">Preferred Currency Format</label>
+                <select
+                  id="settingCurrency"
+                  class="sort-dropdown"
+                  style="width: 100%"
+                >
+                  <option value="USD">USD ($)</option>
+                  <option value="EGP">EGP (EGP)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: LocalStorage & Data Management -->
+          <div class="app-card settings-card danger-zone">
+            <div class="settings-card-header">
+              <div class="settings-icon">💾</div>
+              <div>
+                <h3 class="settings-card-title">Data Persistence & Backup</h3>
+                <p class="card-detail">
+                  Backup your JSON records or reset your workspace state
+                  completely.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <p class="card-detail" style="margin-bottom: 1rem">
+                Your job search records are automatically saved to your
+                browser's LocalStorage.
+              </p>
+              <div class="settings-actions">
+                <button class="btn btn-secondary" id="exportDataBtn">
+                  📤 Export JSON
+                </button>
+                <button class="btn btn-secondary" id="importDataBtn">
+                  📥 Import JSON
+                </button>
+                <button class="btn btn-danger" id="clearDataBtn">
+                  🗑️ Clear All Data
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
