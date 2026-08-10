@@ -36,3 +36,68 @@ const checkingExistingData = function () {
 };
 
 checkingExistingData();
+
+// ==========================================================================
+// Dynamic Power Scroll-to-Top Implementation
+// ==========================================================================
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+const powerRingFill = document.getElementById("powerRingFill");
+
+// Circumference = 2 * Math.PI * 42 ≈ 263.89
+const RING_CIRCUMFERENCE = 263.89;
+
+function updateScrollPower() {
+  const scrollTop = window.scrollY;
+  const totalHeight =
+    document.documentElement.scrollHeight - window.innerHeight;
+
+  if (totalHeight <= 0) return;
+
+  // Calculate normalized ratio (0.0 -> 1.0)
+  const scrollProgress = Math.min(Math.max(scrollTop / totalHeight, 0), 1);
+
+  // Show button after 120px of scrolling
+  if (scrollTop > 120) {
+    scrollTopBtn.classList.add("visible");
+  } else {
+    scrollTopBtn.classList.remove("visible");
+  }
+
+  // Update dynamic CSS power variable for scaling & visual glow
+  scrollTopBtn.style.setProperty("--power-level", scrollProgress);
+
+  // Update SVG stroke offset to fill up the ring
+  const strokeOffset = RING_CIRCUMFERENCE - scrollProgress * RING_CIRCUMFERENCE;
+  if (powerRingFill) {
+    powerRingFill.style.strokeDashoffset = strokeOffset;
+  }
+
+  // Activate Max Power state when scrolling near the bottom (>= 90%)
+  if (scrollProgress >= 0.9) {
+    scrollTopBtn.classList.add("max-power");
+  } else {
+    scrollTopBtn.classList.remove("max-power");
+  }
+}
+
+// Optimized Scroll Event Listener
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      updateScrollPower();
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+// Smooth Scroll back to top on click
+if (scrollTopBtn) {
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+}

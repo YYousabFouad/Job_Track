@@ -851,3 +851,112 @@ body {
     display: none;
   }
 }
+/* ==========================================================================
+   Dynamic Power Scroll-To-Top Button
+   ========================================================================== */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg-card-solid);
+  border: none;
+  color: var(--accent-cyan);
+  cursor: pointer;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(20px) scale(0.8);
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Active State — Dynamically scaled and glowing based on --power-level (0.0 to 1.0) */
+.scroll-top-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(calc(0.85 + (var(--power-level, 0) * 0.25)));
+  box-shadow: 0 0 calc(8px + var(--power-level, 0) * 24px)
+    rgba(56, 189, 248, calc(0.25 + var(--power-level, 0) * 0.65));
+}
+
+.scroll-top-btn:hover {
+  transform: translateY(-4px) scale(calc(0.95 + (var(--power-level, 0) * 0.25))) !important;
+}
+
+.scroll-top-btn .arrow-icon {
+  z-index: 2;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+  filter: drop-shadow(0 0 calc(var(--power-level, 0) * 6px) var(--accent-cyan));
+}
+
+.scroll-top-btn:hover .arrow-icon {
+  transform: translateY(-2px);
+}
+
+/* Power Progress Circular Ring */
+.power-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  border-radius: 50%;
+}
+
+.power-ring-bg {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-width: 6;
+}
+
+.power-ring-fill {
+  fill: none;
+  stroke: var(--accent-cyan);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 263.89; /* 2 * PI * 42 */
+  stroke-dashoffset: 263.89;
+  transition: stroke-dashoffset 0.05s linear;
+}
+
+/* Overcharged Pulsing Aura at MAX Scroll (≥ 90%) */
+.scroll-top-btn.max-power::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  z-index: -1;
+  opacity: 0.6;
+  animation: powerPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes powerPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
