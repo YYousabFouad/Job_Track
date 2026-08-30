@@ -6,40 +6,40 @@
 
 /* 1. Global Theme Variables */
 :root[data-theme="dark"] {
-  --bg-main: #090d16;
-  --bg-navbar: rgba(15, 23, 42, 0.75);
-  --bg-card: rgba(21, 32, 54, 0.7);
-  --bg-card-solid: #152036;
-  --bg-input: rgba(15, 23, 42, 0.6);
-  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-main: #0f172a;
+  --bg-navbar: rgba(15, 23, 42, 0.85);
+  --bg-card: rgba(30, 41, 59, 0.75);
+  --bg-card-solid: #1e293b;
+  --bg-input: rgba(51, 65, 85, 0.5);
+  --bg-hover: rgba(255, 255, 255, 0.05);
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --text-inverse: #090d16;
+  --text-inverse: #0f172a;
 
   --border-color: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.18);
   --border-focus: #38bdf8;
 
-  --shadow-sm: 0 2px 8px -2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
 
   /* Brand Accents */
   --accent-teal: #10b981;
   --accent-cyan: #38bdf8;
-  --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
-  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #34d399 100%);
+  --primary-gradient: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+  --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #10b981 100%);
 
   /* Status Badges */
-  --badge-applied-bg: rgba(59, 130, 246, 0.12);
-  --badge-applied-text: #60a5fa;
+  --badge-applied-bg: rgba(56, 189, 248, 0.12);
+  --badge-applied-text: #38bdf8;
 
-  --badge-interview-bg: rgba(245, 158, 11, 0.12);
-  --badge-interview-text: #fbbf24;
+  --badge-interview-bg: rgba(16, 185, 129, 0.12);
+  --badge-interview-text: #34d399;
 
-  --badge-offer-bg: rgba(16, 185, 129, 0.12);
-  --badge-offer-text: #34d399;
+  --badge-offer-bg: rgba(168, 85, 247, 0.12);
+  --badge-offer-text: #c084fc;
 
   --badge-rejected-bg: rgba(239, 68, 68, 0.12);
   --badge-rejected-text: #f87171;
@@ -47,11 +47,11 @@
 
 :root[data-theme="light"] {
   --bg-main: #f8fafc;
-  --bg-navbar: rgba(255, 255, 255, 0.8);
+  --bg-navbar: rgba(255, 255, 255, 0.85);
   --bg-card: rgba(255, 255, 255, 0.9);
   --bg-card-solid: #ffffff;
   --bg-input: #f1f5f9;
-  --bg-hover: #f1f5f9;
+  --bg-hover: #e2e8f0;
 
   --text-main: #0f172a;
   --text-muted: #64748b;
@@ -61,31 +61,31 @@
   --border-hover: #cbd5e1;
   --border-focus: #0284c7;
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
   --shadow-glow: 0 0 20px rgba(2, 132, 199, 0.12);
 
   /* Brand Accents */
   --accent-teal: #059669;
   --accent-cyan: #0284c7;
-  --primary-gradient: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  --primary-gradient: linear-gradient(135deg, #0284c7 0%, #0f172a 100%);
   --accent-gradient: linear-gradient(135deg, #0284c7 0%, #059669 100%);
 
   /* Status Badges */
   --badge-applied-bg: #e0f2fe;
   --badge-applied-text: #0369a1;
 
-  --badge-interview-bg: #fef3c7;
-  --badge-interview-text: #b45309;
+  --badge-interview-bg: #d1fae5;
+  --badge-interview-text: #047857;
 
-  --badge-offer-bg: #dcfce7;
-  --badge-offer-text: #15803d;
+  --badge-offer-bg: #f3e8ff;
+  --badge-offer-text: #7e22ce;
 
-  --badge-rejected-bg: #ffe4e6;
-  --badge-rejected-text: #be123c;
+  --badge-rejected-bg: #fee2e2;
+  --badge-rejected-text: #b91c1c;
 }
 
-/* 2. Global Resets & Animated Theme Switching */
+/* 2. Global Resets & Eye-Comfort Ambient Background */
 *,
 *::before,
 *::after {
@@ -103,8 +103,21 @@ body {
     Roboto,
     sans-serif;
   background-color: var(--bg-main);
+  background-image:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(56, 189, 248, 0.06) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 85% 65%,
+      rgba(16, 185, 129, 0.04) 0%,
+      transparent 45%
+    );
+  background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.6;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition:
@@ -214,12 +227,8 @@ body {
   height: 2px;
   border-radius: 2px;
   background: var(--accent-gradient);
-
-  /* Start fully hidden/collapsed at scale 0 */
   transform: scaleX(0);
-  transform-origin: center; /* Set to 'left' if you prefer it growing left-to-right */
-
-  /* Smooth transform transition */
+  transform-origin: center;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -229,7 +238,6 @@ body {
   cursor: pointer;
 }
 
-/* Expand the underline on hover and active states */
 .nav-link:hover::after,
 .nav-link.active::after {
   transform: scaleX(1);
@@ -383,12 +391,12 @@ body {
 .btn-primary {
   background: var(--primary-gradient);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
 }
 
 .btn-primary:active {
@@ -581,88 +589,144 @@ body {
 }
 
 /* ==========================================================================
-   Applications Grid & Cards
+   Applications Grid & Horizontal Card Layout
    ========================================================================== */
 .cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .app-card {
   background-color: var(--bg-card);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
   box-shadow: var(--shadow-sm);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.app-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
 .app-card:hover {
-  transform: translateY(-4px);
+  transform: translateX(4px) translateY(-2px);
   border-color: var(--border-hover);
   box-shadow: var(--shadow-md);
 }
 
+.app-card:hover::before {
+  opacity: 1;
+}
+
+/* Card Header: Company & Role */
 .card-header {
+  margin-bottom: 0;
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
+  align-items: center;
 }
 
 .company-brand {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .company-logo {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: linear-gradient(135deg, #334155, #1e293b);
   color: #ffffff;
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .logo-gh {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #0f766e, #134e4a);
 }
 
 .logo-ms {
-  background: linear-gradient(135deg, #0284c7, #2563eb);
+  background: linear-gradient(135deg, #0369a1, #1e3a8a);
 }
 
 .role-title {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--text-main);
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .company-name {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
   font-weight: 500;
+  margin-top: 0.15rem;
 }
 
+/* Card Body: Info Highlights & Notes */
+.card-body {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-detail {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-notes {
+  margin-top: 0;
+  font-size: 0.825rem;
+  color: var(--text-main);
+  background-color: var(--bg-input);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-cyan);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+/* Status Badges */
 .badge {
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 0.3rem 0.75rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 20px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  text-align: center;
+  width: fit-content;
+  justify-self: center;
 }
 
 .badge-applied {
@@ -685,35 +749,14 @@ body {
   color: var(--badge-rejected-text);
 }
 
-.card-body {
-  margin-bottom: 1.25rem;
-}
-
-.card-detail {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 0.35rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.card-notes {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  color: var(--text-main);
-  background-color: var(--bg-input);
-  padding: 0.75rem 0.85rem;
-  border-radius: 10px;
-  border-left: 3px solid var(--accent-cyan);
-}
-
+/* Card Footer: Links & Action Buttons */
 .card-footer {
-  border-top: 1px solid var(--border-color);
-  padding-top: 1rem;
+  border-top: none;
+  padding-top: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .btn-link {
@@ -731,7 +774,12 @@ body {
 
 .card-actions {
   display: flex;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-input);
+  padding: 0.35rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
 }
 
 .btn-icon {
@@ -740,14 +788,18 @@ body {
   color: var(--text-muted);
   cursor: pointer;
   padding: 6px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 0.95rem;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-icon:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--bg-card-solid);
   color: var(--text-main);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Empty State */
@@ -823,30 +875,7 @@ body {
 }
 
 /* ==========================================================================
-   Settings Section
-   ========================================================================== */
-.settings-card {
-  max-width: 600px;
-}
-
-.settings-card-title {
-  margin-bottom: 1.25rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.settings-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-/* Utility Classes */
-.hidden {
-  display: none !important;
-}
-/* ==========================================================================
-   Settings Section Styles (Additive Only)
+   Settings Section Styles
    ========================================================================== */
 .settings-grid {
   display: grid;
@@ -1005,9 +1034,38 @@ input:checked + .slider::before {
   border-color: rgba(239, 68, 68, 0.2);
 }
 
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
 /* ==========================================================================
    Responsive Adjustments
    ========================================================================== */
+@media (max-width: 992px) {
+  .app-card {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .card-header {
+    grid-column: span 2;
+  }
+
+  .badge {
+    justify-self: start;
+  }
+
+  .card-footer {
+    grid-column: span 2;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.85rem;
+    margin-top: 0.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section {
     flex-direction: column;
@@ -1023,6 +1081,24 @@ input:checked + .slider::before {
     display: none;
   }
 }
+
+@media (max-width: 576px) {
+  .app-card {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header,
+  .card-body,
+  .badge,
+  .card-footer {
+    grid-column: span 1;
+  }
+
+  .card-notes {
+    max-width: 100%;
+  }
+}
+
 /* ==========================================================================
    Dynamic Power Scroll-To-Top Button
    ========================================================================== */
@@ -1053,7 +1129,6 @@ input:checked + .slider::before {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Active State — Dynamically scaled and glowing based on --power-level (0.0 to 1.0) */
 .scroll-top-btn.visible {
   opacity: 1;
   visibility: visible;
@@ -1101,12 +1176,12 @@ input:checked + .slider::before {
   stroke: var(--accent-cyan);
   stroke-width: 6;
   stroke-linecap: round;
-  stroke-dasharray: 263.89; /* 2 * PI * 42 */
+  stroke-dasharray: 263.89;
   stroke-dashoffset: 263.89;
   transition: stroke-dashoffset 0.05s linear;
 }
 
-/* Overcharged Pulsing Aura at MAX Scroll (≥ 90%) */
+/* Pulsing Aura at MAX Scroll */
 .scroll-top-btn.max-power::before {
   content: "";
   position: absolute;
