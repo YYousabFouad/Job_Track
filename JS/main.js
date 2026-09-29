@@ -249,3 +249,13 @@ observer.observe(dashboardSection);
 observer.observe(applicationsSeciton);
 observer.observe(statisticsSection);
 observer.observe(settingsSection);
+
+//Delete Button
+
+document.querySelector("#cardsGrid").addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log(e.target);
+  const button = e.target.closest(".btn-icon");
+  const appCard = button.closest(".app-card");
+  appCard.remove();
+});
