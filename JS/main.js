@@ -254,11 +254,41 @@ observer.observe(settingsSection);
 
 document.querySelector("#cardsGrid").addEventListener("click", (e) => {
   e.preventDefault();
-  console.log(e.target);
+  //Guard Clause
   const button = e.target.closest(".btn-icon");
+  if (!button) return;
   const appCard = button.closest(".app-card");
   const action = button.getAttribute("title");
   const openModal = document.querySelector(".modal-overlay");
   if (action === "Delete") appCard.remove();
-  if (action === "Edit") openModal.classList.remove("hidden");
+  if (action === "Edit") {
+    openModal.classList.remove("hidden");
+    //Get Company name , Position , Status , Location , Date Applied , Salary , Job Posting URL,Contact Info , Notes
+    const companyName = appCard.querySelector(".company-name").textContent;
+    const position = appCard.querySelector(".role-title").textContent;
+    const status = appCard.querySelector(".badge").textContent;
+    const appDetails = appCard.querySelectorAll(".card-detail");
+    const location = appDetails[0].textContent.split("Location:")[1];
+    const date = new Date(
+      appDetails[1].textContent.split("Applied:")[1].trim(),
+    );
+    const year = date.getFullYear();
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const salary = appDetails[2].textContent.split("Salary:")[1];
+    const contact = appDetails[3].textContent.split("Contact:")[1];
+    const notes = appCard.querySelector(".card-notes").textContent.trim();
+    console.log(notes);
+    const jobURL = appCard.querySelector(".btn-link").getAttribute("href");
+    openModal.querySelector("#companyInput").value = companyName;
+    openModal.querySelector("#positionInput").value = position;
+    openModal.querySelector("#statusSelect").value = status;
+    openModal.querySelector("#locationInput").value = location;
+    openModal.querySelector("#dateAppliedInput").value =
+      `${year}-${month}-${day}`;
+    openModal.querySelector("#salaryInput").value = salary;
+    openModal.querySelector("#contactInput").value = contact;
+    openModal.querySelector("#notesInput").value = notes;
+    openModal.querySelector("#jobUrlInput").value = jobURL;
+  }
 });
