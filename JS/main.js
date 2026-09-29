@@ -292,3 +292,18 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
     openModal.querySelector("#jobUrlInput").value = jobURL;
   }
 });
+
+// Close The Modal
+const modal = document.querySelector(".modal-overlay");
+modal.addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log(e.target);
+  const closeBtn = e.target.closest(".close-modal-btn");
+  if (closeBtn || e.target === modal) {
+    modal.classList.add("hidden");
+  }
+});
+document.addEventListener("keydown", (e) => {
+  e.preventDefault();
+  if (e.key === "Escape") modal.classList.add("hidden");
+});
