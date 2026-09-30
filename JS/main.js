@@ -250,7 +250,8 @@ observer.observe(applicationsSeciton);
 observer.observe(statisticsSection);
 observer.observe(settingsSection);
 
-//Delete and Edit Button
+//====================================================================
+//=================Delete and Edit Button=============================
 
 document.querySelector("#cardsGrid").addEventListener("click", (e) => {
   e.preventDefault();
@@ -293,7 +294,7 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
   }
 });
 
-// Close The Modal
+//============Close The Modal============================
 const modal = document.querySelector(".modal-overlay");
 modal.addEventListener("click", (e) => {
   e.preventDefault();
