@@ -299,7 +299,8 @@ modal.addEventListener("click", (e) => {
   e.preventDefault();
   console.log(e.target);
   const closeBtn = e.target.closest(".close-modal-btn");
-  if (closeBtn || e.target === modal) {
+  const cancelBtn = e.target.closest("#cancelBtn");
+  if (closeBtn || e.target === modal || cancelBtn) {
     modal.classList.add("hidden");
   }
 });
