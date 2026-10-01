@@ -240,6 +240,7 @@ const observer = new IntersectionObserver(
     // of the viewport, below the sticky navbar.
     rootMargin: `-${navbar.offsetHeight}px 0px -70% 0px`,
 
+    //an amount of the target enters the detection area.
     threshold: 0,
   },
 );
