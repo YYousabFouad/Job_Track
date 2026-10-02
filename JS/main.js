@@ -19,6 +19,124 @@ themeToggleBtn.addEventListener("click", () => {
 
 let applications = [];
 
+const formatDate = function (dateStr) {
+  if (!dateStr) {
+    const today = new Date();
+    return today.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+  }
+
+  if (!dateStr.includes("-")) return dateStr;
+
+  const [year, month, day] = dateStr.split("-");
+  const d = new Date(year, month - 1, day);
+  if (isNaN(d.getTime())) return dateStr;
+
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+};
+
+const createCardElement = function (app) {
+  const card = document.createElement("article");
+  card.className = "app-card";
+  if (app.id) card.dataset.id = app.id;
+
+  const initial = app.company ? app.company.charAt(0).toUpperCase() : "?";
+  const status = app.status || "Applied";
+  const badgeClass = `badge-${status.toLowerCase()}`;
+  const formattedDate = formatDate(app.dateApplied);
+
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="company-brand">
+        <div class="company-logo">${initial}</div>
+        <div>
+          <h3 class="role-title">${app.position}</h3>
+          <p class="company-name">${app.company}</p>
+        </div>
+      </div>
+      <span class="badge ${badgeClass}">${status}</span>
+    </div>
+    <div class="card-body">
+      <p class="card-detail">📍 <strong>Location:</strong> ${app.location || "Not specified"}</p>
+      <p class="card-detail">📅 <strong>Applied:</strong> ${formattedDate}</p>
+      <p class="card-detail">💰 <strong>Salary:</strong> ${app.salary || "Not specified"}</p>
+      <p class="card-detail">👤 <strong>Contact:</strong> ${app.contact || "Not specified"}</p>
+      <p class="card-notes">${app.notes || "No notes added."}</p>
+    </div>
+    <div class="card-footer">
+      ${
+        app.jobUrl
+          ? `<a href="${app.jobUrl}" target="_blank" rel="noopener" class="btn-link">View Job URL &rarr;</a>`
+          : `<span class="btn-link" style="opacity: 0.5; pointer-events: none;">No URL provided</span>`
+      }
+      <div class="card-actions">
+        <button class="btn-icon" title="Edit">✏️</button>
+        <button class="btn-icon" title="Delete">🗑️</button>
+      </div>
+    </div>
+  `;
+
+  return card;
+};
+
+const renderApplications = function (apps) {
+  const cardsGrid = document.querySelector("#cardsGrid");
+  if (!cardsGrid) return;
+  cardsGrid.innerHTML = "";
+  apps.forEach((app) => {
+    cardsGrid.appendChild(createCardElement(app));
+  });
+};
+
+const extractCardsFromDOM = function () {
+  const cards = document.querySelectorAll("#cardsGrid .app-card");
+  const extracted = [];
+  cards.forEach((card, index) => {
+    const id = String(Date.now() + index);
+    card.dataset.id = id;
+
+    const company =
+      card.querySelector(".company-name")?.textContent.trim() || "";
+    const position =
+      card.querySelector(".role-title")?.textContent.trim() || "";
+    const badge = card.querySelector(".badge");
+    const status = badge ? badge.textContent.trim() : "Applied";
+    const appDetails = card.querySelectorAll(".card-detail");
+    const location =
+      appDetails[0]?.textContent.split("Location:")[1]?.trim() || "";
+    const dateApplied =
+      appDetails[1]?.textContent.split("Applied:")[1]?.trim() || "";
+    const salary =
+      appDetails[2]?.textContent.split("Salary:")[1]?.trim() || "";
+    const contact =
+      appDetails[3]?.textContent.split("Contact:")[1]?.trim() || "";
+    const notes = card.querySelector(".card-notes")?.textContent.trim() || "";
+    const jobUrl =
+      card.querySelector(".btn-link")?.getAttribute("href") || "";
+
+    extracted.push({
+      id,
+      company,
+      position,
+      status,
+      location,
+      dateApplied,
+      salary,
+      jobUrl,
+      contact,
+      notes,
+    });
+  });
+  return extracted;
+};
+
 const saveApplications = function (applications) {
   localStorage.setItem("applications", JSON.stringify(applications));
 };
@@ -30,8 +148,12 @@ const loadApplicatoins = function () {
 const checkingExistingData = function () {
   const data = loadApplicatoins();
 
-  if (data) {
+  if (data !== null) {
     applications = data;
+    renderApplications(applications);
+  } else {
+    applications = extractCardsFromDOM();
+    saveApplications(applications);
   }
 };
 
@@ -390,6 +512,163 @@ const updateDashboard = function () {
 updateDashboard();
 
 //====================================================================
+//=================Add Application (Modal Open)=======================
+
+let currentEditingCard = null;
+
+const openModalBtn = document.querySelector("#openModalBtn");
+const emptyAddBtn = document.querySelector("#emptyAddBtn");
+
+const openAddApplicationModal = function () {
+  currentEditingCard = null;
+
+  const modalTitle = document.querySelector("#modalTitle");
+  if (modalTitle) modalTitle.textContent = "Add New Application";
+
+  const form = document.querySelector("#applicationForm");
+  if (form) form.reset();
+
+  const dateInput = document.querySelector("#dateAppliedInput");
+  if (dateInput) {
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.value = today;
+  }
+
+  const modal = document.querySelector(".modal-overlay");
+  if (modal) modal.classList.remove("hidden");
+
+  const companyInput = document.querySelector("#companyInput");
+  if (companyInput) companyInput.focus();
+};
+
+if (openModalBtn) {
+  openModalBtn.addEventListener("click", openAddApplicationModal);
+}
+
+if (emptyAddBtn) {
+  emptyAddBtn.addEventListener("click", openAddApplicationModal);
+}
+
+//====================================================================
+//=================Save / Submit Application Form=====================
+
+const applicationForm = document.querySelector("#applicationForm");
+
+if (applicationForm) {
+  applicationForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const company = document.querySelector("#companyInput").value.trim();
+    const position = document.querySelector("#positionInput").value.trim();
+    const status = document.querySelector("#statusSelect").value;
+    const location = document.querySelector("#locationInput").value.trim();
+    const dateApplied = document.querySelector("#dateAppliedInput").value;
+    const salary = document.querySelector("#salaryInput").value.trim();
+    const jobUrl = document.querySelector("#jobUrlInput").value.trim();
+    const contact = document.querySelector("#contactInput").value.trim();
+    const notes = document.querySelector("#notesInput").value.trim();
+
+    if (!company || !position) return;
+
+    if (currentEditingCard) {
+      // Editing existing application
+      const cardId = currentEditingCard.dataset.id;
+      const initial = company.charAt(0).toUpperCase();
+      const formattedDate = formatDate(dateApplied);
+
+      const logo = currentEditingCard.querySelector(".company-logo");
+      if (logo) logo.textContent = initial;
+
+      const titleEl = currentEditingCard.querySelector(".role-title");
+      if (titleEl) titleEl.textContent = position;
+
+      const companyEl = currentEditingCard.querySelector(".company-name");
+      if (companyEl) companyEl.textContent = company;
+
+      const badge = currentEditingCard.querySelector(".badge");
+      if (badge) {
+        badge.textContent = status;
+        badge.className = `badge badge-${status.toLowerCase()}`;
+      }
+
+      const appDetails = currentEditingCard.querySelectorAll(".card-detail");
+      if (appDetails.length >= 4) {
+        appDetails[0].innerHTML = `📍 <strong>Location:</strong> ${location || "Not specified"}`;
+        appDetails[1].innerHTML = `📅 <strong>Applied:</strong> ${formattedDate}`;
+        appDetails[2].innerHTML = `💰 <strong>Salary:</strong> ${salary || "Not specified"}`;
+        appDetails[3].innerHTML = `👤 <strong>Contact:</strong> ${contact || "Not specified"}`;
+      }
+
+      const cardNotes = currentEditingCard.querySelector(".card-notes");
+      if (cardNotes) {
+        cardNotes.textContent = notes || "No notes added.";
+      }
+
+      const footer = currentEditingCard.querySelector(".card-footer");
+      const existingLink = footer ? footer.querySelector(".btn-link") : null;
+      if (existingLink) {
+        if (jobUrl) {
+          existingLink.outerHTML = `<a href="${jobUrl}" target="_blank" rel="noopener" class="btn-link">View Job URL &rarr;</a>`;
+        } else {
+          existingLink.outerHTML = `<span class="btn-link" style="opacity: 0.5; pointer-events: none;">No URL provided</span>`;
+        }
+      }
+
+      // Update in applications array
+      if (cardId) {
+        const item = applications.find(
+          (app) => String(app.id) === String(cardId),
+        );
+        if (item) {
+          item.company = company;
+          item.position = position;
+          item.status = status;
+          item.location = location;
+          item.dateApplied = dateApplied;
+          item.salary = salary;
+          item.jobUrl = jobUrl;
+          item.contact = contact;
+          item.notes = notes;
+        }
+      }
+
+      currentEditingCard = null;
+    } else {
+      // Adding new application
+      const newAppData = {
+        id: String(Date.now()),
+        company,
+        position,
+        status,
+        location,
+        dateApplied,
+        salary,
+        jobUrl,
+        contact,
+        notes,
+      };
+
+      const newCard = createCardElement(newAppData);
+      const cardsGrid = document.querySelector("#cardsGrid");
+      if (cardsGrid) {
+        cardsGrid.prepend(newCard);
+      }
+
+      applications.unshift(newAppData);
+    }
+
+    // Persist to localStorage & recalculate Dashboard numbers
+    saveApplications(applications);
+    updateDashboard();
+
+    // Close the modal & reset form
+    const modal = document.querySelector(".modal-overlay");
+    if (modal) modal.classList.add("hidden");
+    applicationForm.reset();
+  });
+}
+
+//====================================================================
 //=================Delete and Edit Button=============================
 
 document.querySelector("#cardsGrid").addEventListener("click", (e) => {
@@ -401,35 +680,66 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
   const appCard = button.closest(".app-card");
   const action = button.getAttribute("title");
   const openModal = document.querySelector(".modal-overlay");
+
   if (action === "Delete") {
+    const cardId = appCard.dataset.id;
     appCard.remove();
+    if (cardId) {
+      applications = applications.filter(
+        (app) => String(app.id) !== String(cardId),
+      );
+      saveApplications(applications);
+    }
     updateDashboard();
   }
+
   if (action === "Edit") {
+    currentEditingCard = appCard;
+
+    const modalTitle = document.querySelector("#modalTitle");
+    if (modalTitle) modalTitle.textContent = "Edit Application";
+
     openModal.classList.remove("hidden");
+
     //Get Company name , Position , Status , Location , Date Applied , Salary , Job Posting URL,Contact Info , Notes
-    const companyName = appCard.querySelector(".company-name").textContent;
-    const position = appCard.querySelector(".role-title").textContent;
-    const status = appCard.querySelector(".badge").textContent;
+    const companyName =
+      appCard.querySelector(".company-name")?.textContent || "";
+    const position = appCard.querySelector(".role-title")?.textContent || "";
+    const status = appCard.querySelector(".badge")?.textContent || "Applied";
     const appDetails = appCard.querySelectorAll(".card-detail");
-    const location = appDetails[0].textContent.split("Location:")[1];
-    const date = new Date(
-      appDetails[1].textContent.split("Applied:")[1].trim(),
-    );
-    const year = date.getFullYear();
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const salary = appDetails[2].textContent.split("Salary:")[1];
-    const contact = appDetails[3].textContent.split("Contact:")[1];
-    const notes = appCard.querySelector(".card-notes").textContent.trim();
-    console.log(notes);
-    const jobURL = appCard.querySelector(".btn-link").getAttribute("href");
+    const location =
+      appDetails[0]?.textContent.split("Location:")[1]?.trim() || "";
+
+    const rawDateText =
+      appDetails[1]?.textContent.split("Applied:")[1]?.trim() || "";
+    let dateInputValue = "";
+    if (rawDateText) {
+      if (rawDateText.includes("-") && rawDateText.length === 10) {
+        dateInputValue = rawDateText;
+      } else {
+        const parsedDate = new Date(rawDateText);
+        if (!isNaN(parsedDate.getTime())) {
+          const year = parsedDate.getFullYear();
+          const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+          const day = String(parsedDate.getDate()).padStart(2, "0");
+          dateInputValue = `${year}-${month}-${day}`;
+        }
+      }
+    }
+
+    const salary =
+      appDetails[2]?.textContent.split("Salary:")[1]?.trim() || "";
+    const contact =
+      appDetails[3]?.textContent.split("Contact:")[1]?.trim() || "";
+    const notes = appCard.querySelector(".card-notes")?.textContent.trim() || "";
+    const jobURL =
+      appCard.querySelector(".btn-link")?.getAttribute("href") || "";
+
     openModal.querySelector("#companyInput").value = companyName;
     openModal.querySelector("#positionInput").value = position;
     openModal.querySelector("#statusSelect").value = status;
     openModal.querySelector("#locationInput").value = location;
-    openModal.querySelector("#dateAppliedInput").value =
-      `${year}-${month}-${day}`;
+    openModal.querySelector("#dateAppliedInput").value = dateInputValue;
     openModal.querySelector("#salaryInput").value = salary;
     openModal.querySelector("#contactInput").value = contact;
     openModal.querySelector("#notesInput").value = notes;
@@ -440,15 +750,17 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
 //============Close The Modal============================
 const modal = document.querySelector(".modal-overlay");
 modal.addEventListener("click", (e) => {
-  e.preventDefault();
-  console.log(e.target);
   const closeBtn = e.target.closest(".close-modal-btn");
   const cancelBtn = e.target.closest("#cancelBtn");
   if (closeBtn || e.target === modal || cancelBtn) {
+    e.preventDefault();
     modal.classList.add("hidden");
   }
 });
+
 document.addEventListener("keydown", (e) => {
-  e.preventDefault();
-  if (e.key === "Escape") modal.classList.add("hidden");
+  if (e.key === "Escape") {
+    e.preventDefault();
+    modal.classList.add("hidden");
+  }
 });
