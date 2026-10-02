@@ -252,17 +252,159 @@ observer.observe(statisticsSection);
 observer.observe(settingsSection);
 
 //====================================================================
+//=================Dynamic Dashboard Counter==========================
+
+const updateStatistics = function (
+  total,
+  applied,
+  screening,
+  interview,
+  offer,
+  rejected,
+) {
+  const responses = screening + interview + offer;
+
+  const responseRate =
+    total > 0 ? ((responses / total) * 100).toFixed(1) : "0.0";
+  const interviewRate =
+    total > 0 ? ((interview / total) * 100).toFixed(1) : "0.0";
+  const offerRate = total > 0 ? ((offer / total) * 100).toFixed(1) : "0.0";
+
+  // Stat summary cards (Response Rate, Interview Rate, Offer Rate)
+  const statCards = document.querySelectorAll(
+    ".statistics-detailed-section .stat-summary-card",
+  );
+  if (statCards.length >= 3) {
+    const respVal = statCards[0].querySelector(".stat-value");
+    const respDetail = statCards[0].querySelector(".card-detail");
+    if (respVal) respVal.textContent = `${responseRate}%`;
+    if (respDetail) {
+      respDetail.textContent = `${responses} response${
+        responses === 1 ? "" : "s"
+      } (Screening, Interview, Offer) out of ${total} total application${
+        total === 1 ? "" : "s"
+      }.`;
+    }
+
+    const intVal = statCards[1].querySelector(".stat-value");
+    const intDetail = statCards[1].querySelector(".card-detail");
+    if (intVal) intVal.textContent = `${interviewRate}%`;
+    if (intDetail) {
+      intDetail.textContent = `${interview} application${
+        interview === 1 ? "" : "s"
+      } reached the interview stage.`;
+    }
+
+    const offVal = statCards[2].querySelector(".stat-value");
+    const offDetail = statCards[2].querySelector(".card-detail");
+    if (offVal) offVal.textContent = `${offerRate}%`;
+    if (offDetail) {
+      offDetail.textContent = `${offer} formal offer${
+        offer === 1 ? "" : "s"
+      } extended from active search.`;
+    }
+  }
+
+  // Status Breakdown
+  const breakdownItems = document.querySelectorAll(
+    ".statistics-detailed-section .breakdown-item strong",
+  );
+  if (breakdownItems.length >= 5) {
+    const calcPct = (count) =>
+      total > 0 ? ((count / total) * 100).toFixed(1) : "0.0";
+    breakdownItems[0].textContent = `${calcPct(applied)}% (${applied})`;
+    breakdownItems[1].textContent = `${calcPct(screening)}% (${screening})`;
+    breakdownItems[2].textContent = `${calcPct(interview)}% (${interview})`;
+    breakdownItems[3].textContent = `${calcPct(offer)}% (${offer})`;
+    breakdownItems[4].textContent = `${calcPct(rejected)}% (${rejected})`;
+  }
+};
+
+const updateDashboard = function () {
+  const cards = document.querySelectorAll("#cardsGrid .app-card");
+
+  let appliedCount = 0;
+  let screeningCount = 0;
+  let interviewCount = 0;
+  let offerCount = 0;
+  let rejectedCount = 0;
+
+  // Calculate count for each application status
+  cards.forEach((card) => {
+    const badge = card.querySelector(".badge");
+    if (!badge) return;
+
+    const status = badge.textContent.trim().toLowerCase();
+
+    if (status === "applied") appliedCount++;
+    else if (status === "screening") screeningCount++;
+    else if (status === "interview" || status === "interviews") interviewCount++;
+    else if (status === "offer" || status === "offers") offerCount++;
+    else if (status === "rejected") rejectedCount++;
+  });
+
+  // Select Dashboard Stat Elements
+  const totalStat = document.querySelector(".stat-card.total .stat-value");
+  const appliedStat = document.querySelector(".stat-card.applied .stat-value");
+  const screeningStat = document.querySelector(
+    ".stat-card.screening .stat-value",
+  );
+  const interviewStat = document.querySelector(
+    ".stat-card.interviews .stat-value",
+  );
+  const offerStat = document.querySelector(".stat-card.offers .stat-value");
+  const rejectedStat = document.querySelector(
+    ".stat-card.rejected .stat-value",
+  );
+
+  // Update DOM with live numbers
+  if (totalStat) totalStat.textContent = cards.length;
+  if (appliedStat) appliedStat.textContent = appliedCount;
+  if (screeningStat) screeningStat.textContent = screeningCount;
+  if (interviewStat) interviewStat.textContent = interviewCount;
+  if (offerStat) offerStat.textContent = offerCount;
+  if (rejectedStat) rejectedStat.textContent = rejectedCount;
+
+  // Toggle Empty State if cards are 0
+  const emptyState = document.querySelector("#emptyState");
+  if (emptyState) {
+    if (cards.length === 0) {
+      emptyState.classList.remove("hidden");
+    } else {
+      emptyState.classList.add("hidden");
+    }
+  }
+
+  // Update Statistics Section in sync
+  updateStatistics(
+    cards.length,
+    appliedCount,
+    screeningCount,
+    interviewCount,
+    offerCount,
+    rejectedCount,
+  );
+};
+
+// Initial update on script load
+updateDashboard();
+
+//====================================================================
 //=================Delete and Edit Button=============================
 
 document.querySelector("#cardsGrid").addEventListener("click", (e) => {
-  e.preventDefault();
   //Guard Clause
   const button = e.target.closest(".btn-icon");
   if (!button) return;
+  e.preventDefault();
+
   const appCard = button.closest(".app-card");
   const action = button.getAttribute("title");
   const openModal = document.querySelector(".modal-overlay");
-  if (action === "Delete") appCard.remove();
+  if (action === "Delete") {
+    appCard.remove();
+    updateDashboard();
+  }
   if (action === "Edit") {
     openModal.classList.remove("hidden");
     //Get Company name , Position , Status , Location , Date Applied , Salary , Job Posting URL,Contact Info , Notes
