@@ -13,6 +13,11 @@ themeToggleBtn.addEventListener("click", () => {
 
   htmlElement.setAttribute("data-theme", newTheme);
   localStorage.setItem("jobtrack_theme", newTheme);
+
+  const settingThemeToggle = document.querySelector("#settingThemeToggle");
+  if (settingThemeToggle) {
+    settingThemeToggle.checked = newTheme === "dark";
+  }
 });
 
 //=====================Load and Check Applicatoins=====================
@@ -148,14 +153,11 @@ const checkingExistingData = function () {
 
   if (data !== null) {
     applications = data;
-    renderApplications(applications);
   } else {
     applications = extractCardsFromDOM();
     saveApplications(applications);
   }
 };
-
-checkingExistingData();
 
 // ==========================================================================
 // Dynamic Power Scroll-to-Top Implementation
@@ -441,20 +443,15 @@ const updateStatistics = function (
 };
 
 const updateDashboard = function () {
-  const cards = document.querySelectorAll("#cardsGrid .app-card");
-
   let appliedCount = 0;
   let screeningCount = 0;
   let interviewCount = 0;
   let offerCount = 0;
   let rejectedCount = 0;
 
-  // Calculate count for each application status
-  cards.forEach((card) => {
-    const badge = card.querySelector(".badge");
-    if (!badge) return;
-
-    const status = badge.textContent.trim().toLowerCase();
+  // Calculate count for each status across all applications
+  applications.forEach((app) => {
+    const status = (app.status || "").trim().toLowerCase();
 
     if (status === "applied") appliedCount++;
     else if (status === "screening") screeningCount++;
@@ -463,6 +460,8 @@ const updateDashboard = function () {
     else if (status === "offer" || status === "offers") offerCount++;
     else if (status === "rejected") rejectedCount++;
   });
+
+  const total = applications.length;
 
   // Select Dashboard Stat Elements
   const totalStat = document.querySelector(".stat-card.total .stat-value");
@@ -479,26 +478,16 @@ const updateDashboard = function () {
   );
 
   // Update DOM with live numbers
-  if (totalStat) totalStat.textContent = cards.length;
+  if (totalStat) totalStat.textContent = total;
   if (appliedStat) appliedStat.textContent = appliedCount;
   if (screeningStat) screeningStat.textContent = screeningCount;
   if (interviewStat) interviewStat.textContent = interviewCount;
   if (offerStat) offerStat.textContent = offerCount;
   if (rejectedStat) rejectedStat.textContent = rejectedCount;
 
-  // Toggle Empty State if cards are 0
-  const emptyState = document.querySelector("#emptyState");
-  if (emptyState) {
-    if (cards.length === 0) {
-      emptyState.classList.remove("hidden");
-    } else {
-      emptyState.classList.add("hidden");
-    }
-  }
-
   // Update Statistics Section in sync
   updateStatistics(
-    cards.length,
+    total,
     appliedCount,
     screeningCount,
     interviewCount,
@@ -507,8 +496,129 @@ const updateDashboard = function () {
   );
 };
 
-// Initial update on script load
-updateDashboard();
+//====================================================================
+//=================Search, Filter, and Sort===========================
+
+let currentFilter = "All";
+let currentSearch = "";
+let currentSort = "newest";
+
+const searchInput = document.querySelector("#searchInput");
+const filtersContainer = document.querySelector(".filters");
+const sortDropdown = document.querySelector("#sortDropdown");
+
+const applyFiltersAndRender = function () {
+  let result = [...applications];
+
+  // 1. Status Filter
+  if (currentFilter && currentFilter !== "All") {
+    result = result.filter(
+      (app) =>
+        (app.status || "").trim().toLowerCase() ===
+        currentFilter.toLowerCase(),
+    );
+  }
+
+  // 2. Search Query across company, position, location, notes, and contact
+  if (currentSearch) {
+    result = result.filter((app) => {
+      const company = (app.company || "").toLowerCase();
+      const position = (app.position || "").toLowerCase();
+      const location = (app.location || "").toLowerCase();
+      const notes = (app.notes || "").toLowerCase();
+      const contact = (app.contact || "").toLowerCase();
+
+      return (
+        company.includes(currentSearch) ||
+        position.includes(currentSearch) ||
+        location.includes(currentSearch) ||
+        notes.includes(currentSearch) ||
+        contact.includes(currentSearch)
+      );
+    });
+  }
+
+  // 3. Sorting
+  if (currentSort === "newest") {
+    result.sort((a, b) => {
+      const timeA = new Date(a.dateApplied || 0).getTime() || 0;
+      const timeB = new Date(b.dateApplied || 0).getTime() || 0;
+      if (timeB !== timeA) return timeB - timeA;
+      return (Number(b.id) || 0) - (Number(a.id) || 0);
+    });
+  } else if (currentSort === "oldest") {
+    result.sort((a, b) => {
+      const timeA = new Date(a.dateApplied || 0).getTime() || 0;
+      const timeB = new Date(b.dateApplied || 0).getTime() || 0;
+      if (timeA !== timeB) return timeA - timeB;
+      return (Number(a.id) || 0) - (Number(b.id) || 0);
+    });
+  } else if (currentSort === "company") {
+    result.sort((a, b) => (a.company || "").localeCompare(b.company || ""));
+  } else if (currentSort === "position") {
+    result.sort((a, b) =>
+      (a.position || "").localeCompare(b.position || ""),
+    );
+  }
+
+  // 4. Render filtered & sorted cards
+  renderApplications(result);
+
+  // 5. Handle empty state
+  const emptyState = document.querySelector("#emptyState");
+  if (emptyState) {
+    if (result.length === 0) {
+      emptyState.classList.remove("hidden");
+      const emptyTitle = emptyState.querySelector(".empty-title");
+      const emptyText = emptyState.querySelector(".empty-text");
+      if (applications.length === 0) {
+        if (emptyTitle) emptyTitle.textContent = "No applications found";
+        if (emptyText)
+          emptyText.textContent =
+            "Start tracking your job search or adjust your active search and filter settings.";
+      } else {
+        if (emptyTitle) emptyTitle.textContent = "No matching applications";
+        if (emptyText)
+          emptyText.textContent = `No applications match your active search or filter. Try clearing or adjusting your settings.`;
+      }
+    } else {
+      emptyState.classList.add("hidden");
+    }
+  }
+};
+
+// Search Event Listener
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    currentSearch = e.target.value.trim().toLowerCase();
+    applyFiltersAndRender();
+  });
+}
+
+// Filter Buttons Event Delegation
+if (filtersContainer) {
+  filtersContainer.addEventListener("click", (e) => {
+    const btn = e.target.closest(".filter-btn");
+    if (!btn) return;
+
+    filtersContainer
+      .querySelectorAll(".filter-btn")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    currentFilter = btn.dataset.filter || "All";
+    applyFiltersAndRender();
+  });
+}
+
+// Sort Dropdown Event Listener
+if (sortDropdown) {
+  sortDropdown.addEventListener("change", (e) => {
+    currentSort = e.target.value;
+    applyFiltersAndRender();
+  });
+}
+
 
 //====================================================================
 //=================Add Application (Modal Open)=======================
@@ -647,18 +757,13 @@ if (applicationForm) {
         notes,
       };
 
-      const newCard = createCardElement(newAppData);
-      const cardsGrid = document.querySelector("#cardsGrid");
-      if (cardsGrid) {
-        cardsGrid.prepend(newCard);
-      }
-
       applications.unshift(newAppData);
     }
 
-    // Persist to localStorage & recalculate Dashboard numbers
+    // Persist to localStorage, update stats, and re-render cards
     saveApplications(applications);
     updateDashboard();
+    applyFiltersAndRender();
 
     // Close the modal & reset form
     const modal = document.querySelector(".modal-overlay");
@@ -682,7 +787,6 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
 
   if (action === "Delete") {
     const cardId = appCard.dataset.id;
-    appCard.remove();
     if (cardId) {
       applications = applications.filter(
         (app) => String(app.id) !== String(cardId),
@@ -690,6 +794,7 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
       saveApplications(applications);
     }
     updateDashboard();
+    applyFiltersAndRender();
   }
 
   if (action === "Edit") {
@@ -748,18 +853,334 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
 
 //============Close The Modal============================
 const modal = document.querySelector(".modal-overlay");
-modal.addEventListener("click", (e) => {
-  const closeBtn = e.target.closest(".close-modal-btn");
-  const cancelBtn = e.target.closest("#cancelBtn");
-  if (closeBtn || e.target === modal || cancelBtn) {
+if (modal) {
+  modal.addEventListener("click", (e) => {
+    const closeBtn = e.target.closest(".close-modal-btn");
+    const cancelBtn = e.target.closest("#cancelBtn");
+    if (closeBtn || e.target === modal || cancelBtn) {
+      e.preventDefault();
+      modal.classList.add("hidden");
+    }
+  });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
     e.preventDefault();
     modal.classList.add("hidden");
   }
 });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    e.preventDefault();
-    modal.classList.add("hidden");
+//====================================================================
+//=================Settings & Preferences=============================
+
+const saveProfileBtn = document.querySelector("#saveProfileBtn");
+const settingUserName = document.querySelector("#settingUserName");
+const settingUserInitials = document.querySelector("#settingUserInitials");
+const welcomeTitle = document.querySelector(".welcome-title");
+const profileAvatar = document.querySelector(".profile-avatar");
+
+const loadUserProfile = function () {
+  const savedName = localStorage.getItem("jobtrack_user_name");
+  const savedInitials = localStorage.getItem("jobtrack_user_initials");
+
+  if (savedName) {
+    if (settingUserName) settingUserName.value = savedName;
+    const firstName = savedName.trim().split(" ")[0];
+    if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${firstName} 👋`;
   }
+  if (savedInitials) {
+    if (settingUserInitials) settingUserInitials.value = savedInitials;
+    if (profileAvatar) profileAvatar.textContent = savedInitials;
+  }
+};
+
+if (saveProfileBtn) {
+  saveProfileBtn.addEventListener("click", () => {
+    const name = settingUserName ? settingUserName.value.trim() : "";
+    const initials = settingUserInitials
+      ? settingUserInitials.value.trim()
+      : "";
+
+    if (name) {
+      localStorage.setItem("jobtrack_user_name", name);
+      const firstName = name.split(" ")[0];
+      if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${firstName} 👋`;
+    }
+    if (initials) {
+      localStorage.setItem("jobtrack_user_initials", initials);
+      if (profileAvatar) profileAvatar.textContent = initials;
+    }
+
+    const originalText = saveProfileBtn.textContent;
+    saveProfileBtn.textContent = "✓ Saved!";
+    setTimeout(() => {
+      saveProfileBtn.textContent = originalText;
+    }, 1800);
+  });
+}
+
+// Appearance: Theme & Compact Cards
+const settingThemeToggle = document.querySelector("#settingThemeToggle");
+if (settingThemeToggle) {
+  settingThemeToggle.checked = htmlElement.getAttribute("data-theme") === "dark";
+  settingThemeToggle.addEventListener("change", () => {
+    const newTheme = settingThemeToggle.checked ? "dark" : "light";
+    htmlElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("jobtrack_theme", newTheme);
+  });
+}
+
+const settingCompactToggle = document.querySelector("#settingCompactToggle");
+const cardsGridElement = document.querySelector("#cardsGrid");
+
+const loadCompactMode = function () {
+  const isCompact = localStorage.getItem("jobtrack_compact") === "true";
+  if (settingCompactToggle) settingCompactToggle.checked = isCompact;
+  if (cardsGridElement) {
+    if (isCompact) cardsGridElement.classList.add("compact-cards");
+    else cardsGridElement.classList.remove("compact-cards");
+  }
+};
+
+if (settingCompactToggle) {
+  settingCompactToggle.addEventListener("change", () => {
+    const isCompact = settingCompactToggle.checked;
+    localStorage.setItem("jobtrack_compact", isCompact);
+    if (cardsGridElement) {
+      if (isCompact) cardsGridElement.classList.add("compact-cards");
+      else cardsGridElement.classList.remove("compact-cards");
+    }
+  });
+}
+
+// Tracker Defaults: Default Sort & Currency
+const settingDefaultSort = document.querySelector("#settingDefaultSort");
+
+const loadDefaultSort = function () {
+  const savedSort = localStorage.getItem("jobtrack_default_sort") || "newest";
+  if (settingDefaultSort) settingDefaultSort.value = savedSort;
+  if (sortDropdown) sortDropdown.value = savedSort;
+  currentSort = savedSort;
+};
+
+if (settingDefaultSort) {
+  settingDefaultSort.addEventListener("change", () => {
+    const newSort = settingDefaultSort.value;
+    localStorage.setItem("jobtrack_default_sort", newSort);
+    if (sortDropdown) sortDropdown.value = newSort;
+    currentSort = newSort;
+    applyFiltersAndRender();
+  });
+}
+
+const settingCurrency = document.querySelector("#settingCurrency");
+
+const updateSalaryPlaceholder = function (currency) {
+  const salaryInput = document.querySelector("#salaryInput");
+  if (!salaryInput) return;
+  const currencyPlaceholders = {
+    USD: "e.g. $90,000 / yr",
+    EGP: "e.g. EGP 45,000 / mo",
+    EUR: "e.g. €80,000 / yr",
+    GBP: "e.g. £70,000 / yr",
+  };
+  salaryInput.placeholder =
+    currencyPlaceholders[currency] || "e.g. $90,000 / yr";
+};
+
+const loadCurrency = function () {
+  const savedCurrency = localStorage.getItem("jobtrack_currency") || "USD";
+  if (settingCurrency) settingCurrency.value = savedCurrency;
+  updateSalaryPlaceholder(savedCurrency);
+};
+
+if (settingCurrency) {
+  settingCurrency.addEventListener("change", () => {
+    const newCurrency = settingCurrency.value;
+    localStorage.setItem("jobtrack_currency", newCurrency);
+    updateSalaryPlaceholder(newCurrency);
+  });
+}
+
+//====================================================================
+//=================Data Persistence (Export / Import / Clear)=========
+
+const exportDataBtn = document.querySelector("#exportDataBtn");
+const importDataBtn = document.querySelector("#importDataBtn");
+const clearDataBtn = document.querySelector("#clearDataBtn");
+
+if (exportDataBtn) {
+  exportDataBtn.addEventListener("click", () => {
+    const backupData = {
+      appName: "JobTrack",
+      version: "1.0",
+      exportedAt: new Date().toISOString(),
+      userProfile: {
+        name: localStorage.getItem("jobtrack_user_name") || "Yosab Fouad",
+        initials: localStorage.getItem("jobtrack_user_initials") || "YF",
+      },
+      preferences: {
+        theme: localStorage.getItem("jobtrack_theme") || "dark",
+        compact: localStorage.getItem("jobtrack_compact") === "true",
+        defaultSort:
+          localStorage.getItem("jobtrack_default_sort") || "newest",
+        currency: localStorage.getItem("jobtrack_currency") || "USD",
+      },
+      applications: applications,
+    };
+
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const dateStamp = new Date().toISOString().split("T")[0];
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `jobtrack_backup_${dateStamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    const originalText = exportDataBtn.textContent;
+    exportDataBtn.textContent = "✓ Exported!";
+    setTimeout(() => {
+      exportDataBtn.textContent = originalText;
+    }, 1800);
+  });
+}
+
+// Hidden file input for JSON import
+let importFileInput = document.querySelector("#importFileInput");
+if (!importFileInput) {
+  importFileInput = document.createElement("input");
+  importFileInput.type = "file";
+  importFileInput.id = "importFileInput";
+  importFileInput.accept = ".json,application/json";
+  importFileInput.style.display = "none";
+  document.body.appendChild(importFileInput);
+}
+
+if (importDataBtn) {
+  importDataBtn.addEventListener("click", () => {
+    importFileInput.click();
+  });
+}
+
+importFileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const parsed = JSON.parse(event.target.result);
+      let importedApps = [];
+
+      if (Array.isArray(parsed)) {
+        importedApps = parsed;
+      } else if (parsed && Array.isArray(parsed.applications)) {
+        importedApps = parsed.applications;
+
+        // Restore profile and preferences if present in backup
+        if (parsed.userProfile) {
+          if (parsed.userProfile.name) {
+            localStorage.setItem("jobtrack_user_name", parsed.userProfile.name);
+          }
+          if (parsed.userProfile.initials) {
+            localStorage.setItem(
+              "jobtrack_user_initials",
+              parsed.userProfile.initials,
+            );
+          }
+          loadUserProfile();
+        }
+        if (parsed.preferences) {
+          if (parsed.preferences.theme) {
+            localStorage.setItem("jobtrack_theme", parsed.preferences.theme);
+            htmlElement.setAttribute("data-theme", parsed.preferences.theme);
+            if (settingThemeToggle)
+              settingThemeToggle.checked = parsed.preferences.theme === "dark";
+          }
+          if (typeof parsed.preferences.compact === "boolean") {
+            localStorage.setItem(
+              "jobtrack_compact",
+              parsed.preferences.compact,
+            );
+            loadCompactMode();
+          }
+          if (parsed.preferences.defaultSort) {
+            localStorage.setItem(
+              "jobtrack_default_sort",
+              parsed.preferences.defaultSort,
+            );
+            loadDefaultSort();
+          }
+          if (parsed.preferences.currency) {
+            localStorage.setItem(
+              "jobtrack_currency",
+              parsed.preferences.currency,
+            );
+            loadCurrency();
+          }
+        }
+      } else {
+        throw new Error("Invalid format");
+      }
+
+      // Ensure every application has an ID and status
+      importedApps.forEach((app, i) => {
+        if (!app.id) app.id = String(Date.now() + i);
+        if (!app.status) app.status = "Applied";
+      });
+
+      applications = importedApps;
+      saveApplications(applications);
+      applyFiltersAndRender();
+      updateDashboard();
+
+      const originalText = importDataBtn.textContent;
+      importDataBtn.textContent = `✓ Imported (${importedApps.length})!`;
+      setTimeout(() => {
+        importDataBtn.textContent = originalText;
+      }, 2000);
+    } catch (err) {
+      alert("Failed to import: Please provide a valid JobTrack JSON backup file.");
+    }
+    importFileInput.value = "";
+  };
+  reader.readAsText(file);
 });
+
+if (clearDataBtn) {
+  clearDataBtn.addEventListener("click", () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to clear all data? This will delete all applications and cannot be undone.",
+    );
+    if (!confirmed) return;
+
+    applications = [];
+    saveApplications(applications);
+    applyFiltersAndRender();
+    updateDashboard();
+
+    const originalText = clearDataBtn.textContent;
+    clearDataBtn.textContent = "✓ Cleared!";
+    setTimeout(() => {
+      clearDataBtn.textContent = originalText;
+    }, 1800);
+  });
+}
+
+//====================================================================
+//=================Initialize Application=============================
+
+checkingExistingData();
+loadUserProfile();
+loadCompactMode();
+loadDefaultSort();
+loadCurrency();
+applyFiltersAndRender();
+updateDashboard();
+
