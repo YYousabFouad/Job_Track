@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobTrack — Modern Job Application Tracker</title>
+    <link rel="stylesheet" href="../Style/style.css" />
+
+    <!-- Google Fonts for Modern SaaS Theme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+      <div class="nav-container">
+        <!-- Brand Logo -->
+        <a href="#dashboard" class="logo">
+          <svg
+            class="logo-svg"
+            width="34"
+            height="34"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 3C10.4772 3 6 7.47715 6 13C6 20.5 16 29 16 29C16 29 26 20.5 26 13C26 7.47715 21.5228 3 16 3Z"
+              fill="url(#jobtrack-grad)"
+            />
+            <path
+              d="M11 13.5L14.5 17L21 10.5"
+              stroke="white"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <defs>
+              <linearGradient
+                id="jobtrack-grad"
+                x1="6"
+                y1="3"
+                x2="26"
+                y2="29"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#38bdf8" />
+                <stop offset="1" stop-color="#10b981" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">JobTrack</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <nav class="nav-links">
+          <a class="nav-link nav-link-dashboard active">Dashboard</a>
+          <a class="nav-link nav-link-applications">Applications</a>
+          <a class="nav-link nav-link-statistics">Statistics</a>
+          <a class="nav-link nav-link-settings">Settings</a>
+        </nav>
+
+        <!-- Right Header Actions -->
+        <div class="nav-actions">
+          <!-- Animated Dark Mode Toggle Button -->
+          <button
+            id="themeToggleBtn"
+            class="theme-toggle-btn"
+            aria-label="Toggle dark mode"
+            title="Toggle Theme"
+          >
+            <svg
+              class="sun-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg
+              class="moon-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <!-- Links to index.html (the Login & Account page) -->
+          <a href="index.html" class="profile-avatar" title="Account, Sign In &amp; Log Out">YF</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-container">
+      <!-- 1. DASHBOARD / HERO SECTION -->
+      <section id="dashboard" class="dashboard-section">
+        <div class="hero-section">
+          <div class="hero-content">
+            <h1 class="welcome-title">Welcome back, Yosab 👋</h1>
+            <p class="hero-description">
+              Organize, track, and optimize your job applications in one
+              interactive workspace.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-add" id="openModalBtn">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add Application
+          </button>
+        </div>
+
+        <!-- Dashboard Stat Cards Overview -->
+        <div class="dashboard-summary-cards">
+          <div class="stat-card total">
+            <div class="stat-info">
+              <span class="stat-label">Total</span>
+              <span class="stat-value">12</span>
+            </div>
+            <div class="stat-icon-wrapper icon-total">📋</div>
+          </div>
+          <div class="stat-card applied">
+            <div class="stat-info">
+              <span class="stat-label">Applied</span>
+              <span class="stat-value">5</span>
+            </div>
+            <div class="stat-icon-wrapper icon-applied">🚀</div>
+          </div>
+          <div class="stat-card screening">
+            <div class="stat-info">
+              <span class="stat-label">Screening</span>
+              <span class="stat-value">1</span>
+            </div>
+            <div class="stat-icon-wrapper icon-screening">🔍</div>
+          </div>
+          <div class="stat-card interviews">
+            <div class="stat-info">
+              <span class="stat-label">Interviews</span>
+              <span class="stat-value">3</span>
+            </div>
+            <div class="stat-icon-wrapper icon-interview">🎯</div>
+          </div>
+          <div class="stat-card offers">
+            <div class="stat-info">
+              <span class="stat-label">Offers</span>
+              <span class="stat-value">1</span>
+            </div>
+            <div class="stat-icon-wrapper icon-offer">🎉</div>
+          </div>
+          <div class="stat-card rejected">
+            <div class="stat-info">
+              <span class="stat-label">Rejected</span>
+              <span class="stat-value">2</span>
+            </div>
+            <div class="stat-icon-wrapper icon-rejected">⏳</div>
+          </div>
+        </div>
+
+        <!-- Down Arrow Anchor Button -->
+        <div class="scroll-down-wrapper">
+          <a
+            class="scroll-down-btn"
+            id="scrollDownBtn"
+            aria-label="Scroll down to applications"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </a>
+        </div>
+      </section>
+
+      <hr class="section-divider" />
+
+      <!-- 2. APPLICATIONS SECTION -->
+      <section id="applications" class="applications-section">
+        <div class="section-header">
+          <h2 class="section-title">Manage Applications</h2>
+          <p class="section-subtitle">
+            Search, filter, and modify your submitted job applications.
+          </p>
+        </div>
+
+        <!-- Controls Bar: Search, Filters, Sort -->
+        <div class="controls-bar">
+          <div class="search-box">
+            <svg
+              class="search-icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="text"
+              placeholder="Search by company, position, location, or notes..."
+              class="search-input"
+              id="searchInput"
+            />
+          </div>
+
+          <div class="filters">
+            <button class="filter-btn active" data-filter="All">All</button>
+            <button class="filter-btn" data-filter="Applied">Applied</button>
+            <button class="filter-btn" data-filter="Screening">
+              Screening
+            </button>
+            <button class="filter-btn" data-filter="Interview">
+              Interview
+            </button>
+            <button class="filter-btn" data-filter="Offer">Offer</button>
+            <button class="filter-btn" data-filter="Rejected">Rejected</button>
+          </div>
+
+          <div class="sort-box">
+            <select class="sort-dropdown" id="sortDropdown">
+              <option value="newest">Sort: Newest</option>
+              <option value="oldest">Sort: Oldest</option>
+              <option value="company">Company (A-Z)</option>
+              <option value="position">Position (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Application Cards Grid -->
+        <div class="cards-grid" id="cardsGrid">
+          <!-- Card 1 -->
+          <article class="app-card">
+            <div class="card-header">
+              <div class="company-brand">
+                <div class="company-logo">V</div>
+                <div>
+                  <h3 class="role-title">Frontend Engineer</h3>
+                  <p class="company-name">Vercel</p>
+                </div>
+              </div>
+              <span class="badge badge-interview">Interview</span>
+            </div>
+            <div class="card-body">
+              <p class="card-detail">📍 <strong>Location:</strong> Remote</p>
+              <p class="card-detail">
+                📅 <strong>Applied:</strong> Aug 08, 2026
+              </p>
+              <p class="card-detail">
+                💰 <strong>Salary:</strong> $110,000 / yr
+              </p>
+              <p class="card-detail">
+                👤 <strong>Contact:</strong> Sarah (Recruiter)
+              </p>
+              <p class="card-notes">
+                Technical interview next week. Reviewing Next.js & React state
+                concepts.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a
+                href="https://vercel.com/careers"
+                target="_blank"
+                rel="noopener"
+                class="btn-link"
+                >View Job URL &rarr;</a
+              >
+              <div class="card-actions">
+                <button class="btn-icon" title="Edit">✏️</button>
+                <button class="btn-icon" title="Delete">🗑️</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="app-card">
+            <div class="card-header">
+              <div class="company-brand">
+                <div class="company-logo logo-gh">G</div>
+                <div>
+                  <h3 class="role-title">Full Stack Developer</h3>
+                  <p class="company-name">GitHub</p>
+                </div>
+              </div>
+              <span class="badge badge-offer">Offer</span>
+            </div>
+            <div class="card-body">
+              <p class="card-detail">📍 <strong>Location:</strong> Remote</p>
+              <p class="card-detail">
+                📅 <strong>Applied:</strong> Jul 15, 2026
+              </p>
+              <p class="card-detail">
+                💰 <strong>Salary:</strong> $125,000 / yr
+              </p>
+              <p class="card-detail">
+                👤 <strong>Contact:</strong> tech-hiring@github.com
+              </p>
+              <p class="card-notes">
+                Received official offer letter! Compensation review in progress.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a
+                href="https://github.com/about/careers"
+                target="_blank"
+                rel="noopener"
+                class="btn-link"
+                >View Job URL &rarr;</a
+              >
+              <div class="card-actions">
+                <button class="btn-icon" title="Edit">✏️</button>
+                <button class="btn-icon" title="Delete">🗑️</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="app-card">
+            <div class="card-header">
+              <div class="company-brand">
+                <div class="company-logo logo-ms">M</div>
+                <div>
+                  <h3 class="role-title">Backend Engineer (NestJS)</h3>
+                  <p class="company-name">Microsoft</p>
+                </div>
+              </div>
+              <span class="badge badge-applied">Screening</span>
+            </div>
+            <div class="card-body">
+              <p class="card-detail">
+                📍 <strong>Location:</strong> Cairo, Egypt (Hybrid)
+              </p>
+              <p class="card-detail">
+                📅 <strong>Applied:</strong> Aug 02, 2026
+              </p>
+              <p class="card-detail">
+                💰 <strong>Salary:</strong> EGP 45,000 / mo
+              </p>
+              <p class="card-detail">
+                👤 <strong>Contact:</strong> hr@microsoft.com
+              </p>
+              <p class="card-notes">
+                HR screening call scheduled for Thursday morning.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a
+                href="https://careers.microsoft.com"
+                target="_blank"
+                rel="noopener"
+                class="btn-link"
+                >View Job URL &rarr;</a
+              >
+              <div class="card-actions">
+                <button class="btn-icon" title="Edit">✏️</button>
+                <button class="btn-icon" title="Delete">🗑️</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Empty State View -->
+        <div class="empty-state hidden" id="emptyState">
+          <div class="empty-icon">📂</div>
+          <h3 class="empty-title">No applications found</h3>
+          <p class="empty-text">
+            Start tracking your job search or adjust your active search and
+            filter settings.
+          </p>
+          <button class="btn btn-primary empty-btn" id="emptyAddBtn">
+            + Add New Application
+          </button>
+        </div>
+      </section>
+
+      <hr class="section-divider" />
+
+      <!-- 3. STATISTICS SECTION -->
+      <section id="statistics" class="statistics-detailed-section">
+        <div class="section-header">
+          <h2 class="section-title">Statistics & Insights</h2>
+          <p class="section-subtitle">
+            Analyze application performance, response rates, and offer ratios.
+          </p>
+        </div>
+
+        <div class="stats-overview-grid">
+          <div class="app-card stat-summary-card">
+            <h3>Response Rate</h3>
+            <p class="stat-value stat-value-highlight">41.7%</p>
+            <p class="card-detail">
+              5 responses (Screening, Interview, Offer) out of 12 total
+              applications.
+            </p>
+          </div>
+
+          <div class="app-card stat-summary-card">
+            <h3>Interview Rate</h3>
+            <p class="stat-value stat-value-highlight">25.0%</p>
+            <p class="card-detail">
+              3 applications reached the interview stage.
+            </p>
+          </div>
+
+          <div class="app-card stat-summary-card">
+            <h3>Offer Rate</h3>
+            <p class="stat-value stat-value-highlight">8.3%</p>
+            <p class="card-detail">
+              1 formal offer extended from active search.
+            </p>
+          </div>
+
+          <div class="app-card stat-breakdown-card">
+            <h3>Status Breakdown</h3>
+            <div class="breakdown-list">
+              <div class="breakdown-item">
+                <span>Applied</span> <strong>41.7% (5)</strong>
+              </div>
+              <div class="breakdown-item">
+                <span>Screening</span> <strong>8.3% (1)</strong>
+              </div>
+              <div class="breakdown-item">
+                <span>Interviews</span> <strong>25.0% (3)</strong>
+              </div>
+              <div class="breakdown-item">
+                <span>Offers</span> <strong>8.3% (1)</strong>
+              </div>
+              <div class="breakdown-item">
+                <span>Rejected</span> <strong>16.7% (2)</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="section-divider" />
+
+      <!-- 4. SETTINGS SECTION -->
+      <section id="settings" class="settings-section">
+        <div class="section-header">
+          <h2 class="section-title">Settings & Preferences</h2>
+          <p class="section-subtitle">
+            Configure your profile, app appearance, data persistence, and
+            default views.
+          </p>
+        </div>
+
+        <div class="settings-grid">
+          <!-- Card 1: User Profile Settings -->
+          <div class="app-card settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">👤</div>
+              <div>
+                <h3 class="settings-card-title">User Profile</h3>
+                <p class="card-detail">
+                  Manage how your name and avatar appear across JobTrack.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-group">
+                <label for="settingUserName">Full Name</label>
+                <input
+                  type="text"
+                  id="settingUserName"
+                  class="search-input"
+                  value="Yosab Fouad"
+                />
+              </div>
+              <div class="form-group">
+                <label for="settingUserInitials">Avatar Initials</label>
+                <input
+                  type="text"
+                  id="settingUserInitials"
+                  class="search-input"
+                  value="YF"
+                  maxlength="3"
+                />
+              </div>
+            </div>
+            <div class="settings-card-footer">
+              <button class="btn btn-primary" id="saveProfileBtn">
+                Save Profile
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Appearance & UI Preferences -->
+          <div class="app-card settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">🎨</div>
+              <div>
+                <h3 class="settings-card-title">Appearance & Display</h3>
+                <p class="card-detail">
+                  Customize visual theme choices and dynamic behavior.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">Dark Theme</span>
+                  <span class="toggle-desc"
+                    >Switch between deep dark mode and crisp light theme.</span
+                  >
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingThemeToggle" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="setting-toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">Compact Cards</span>
+                  <span class="toggle-desc"
+                    >Reduce application card padding for denser information
+                    views.</span
+                  >
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="settingCompactToggle" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Default Job Search Preferences -->
+          <div class="app-card settings-card">
+            <div class="settings-card-header">
+              <div class="settings-icon">⚙️</div>
+              <div>
+                <h3 class="settings-card-title">Tracker Defaults</h3>
+                <p class="card-detail">
+                  Set your preferred initial filters and currency indicators.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <div class="form-group">
+                <label for="settingDefaultSort">Default Sort Order</label>
+                <select
+                  id="settingDefaultSort"
+                  class="sort-dropdown"
+                  style="width: 100%"
+                >
+                  <option value="newest">Sort: Newest</option>
+                  <option value="oldest">Sort: Oldest</option>
+                  <option value="company">Company (A-Z)</option>
+                  <option value="position">Position (A-Z)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="settingCurrency">Preferred Currency Format</label>
+                <select
+                  id="settingCurrency"
+                  class="sort-dropdown"
+                  style="width: 100%"
+                >
+                  <option value="USD">USD ($)</option>
+                  <option value="EGP">EGP (EGP)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: LocalStorage & Data Management -->
+          <div class="app-card settings-card danger-zone">
+            <div class="settings-card-header">
+              <div class="settings-icon">💾</div>
+              <div>
+                <h3 class="settings-card-title">Data Persistence & Backup</h3>
+                <p class="card-detail">
+                  Backup your JSON records or reset your workspace state
+                  completely.
+                </p>
+              </div>
+            </div>
+            <div class="settings-card-body">
+              <p class="card-detail" style="margin-bottom: 1rem">
+                Your job search records are automatically saved to your
+                browser's LocalStorage.
+              </p>
+              <div class="settings-actions">
+                <button class="btn btn-secondary" id="exportDataBtn">
+                  📤 Export JSON
+                </button>
+                <button class="btn btn-secondary" id="importDataBtn">
+                  📥 Import JSON
+                </button>
+                <button class="btn btn-danger" id="clearDataBtn">
+                  🗑️ Clear All Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Application Modal -->
+    <div class="modal-overlay hidden" id="modalOverlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="modalTitle">Add New Application</h3>
+          <button
+            class="close-modal-btn"
+            id="closeModalBtn"
+            aria-label="Close modal"
+          >
+            &times;
+          </button>
+        </div>
+        <form class="modal-form" id="applicationForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="companyInput">Company Name *</label>
+              <input
+                type="text"
+                id="companyInput"
+                placeholder="e.g. Stripe"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="positionInput">Position *</label>
+              <input
+                type="text"
+                id="positionInput"
+                placeholder="e.g. Software Engineer"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="statusSelect">Status</label>
+              <select id="statusSelect">
+                <option value="Applied">Applied</option>
+                <option value="Screening">Screening</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="locationInput">Location</label>
+              <input
+                type="text"
+                id="locationInput"
+                placeholder="e.g. Remote / San Francisco, CA"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="dateAppliedInput">Date Applied</label>
+              <input type="date" id="dateAppliedInput" />
+            </div>
+
+            <div class="form-group">
+              <label for="salaryInput">Salary / Compensation</label>
+              <input
+                type="text"
+                id="salaryInput"
+                placeholder="e.g. $90,000 / yr"
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="jobUrlInput">Job Posting URL</label>
+              <input
+                type="url"
+                id="jobUrlInput"
+                placeholder="https://company.com/careers/job"
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="contactInput">Contact Information</label>
+              <input
+                type="text"
+                id="contactInput"
+                placeholder="e.g. Jane Doe (Recruiter) - jane@company.com"
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="notesInput">Notes</label>
+              <textarea
+                id="notesInput"
+                rows="3"
+                placeholder="Add preparation details, interview feedback, or follow-up dates..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="cancelBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="saveAppBtn">
+              Save Application
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- Interactive Dynamic Power Scroll To Top Button -->
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+      <svg class="power-ring" viewBox="0 0 100 100">
+        <circle class="power-ring-bg" cx="50" cy="50" r="42" />
+        <circle
+          class="power-ring-fill"
+          id="powerRingFill"
+          cx="50"
+          cy="50"
+          r="42"
+        />
+      </svg>
+      <svg
+        class="arrow-icon"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
+
+    <script src="../JS/main.js"></script>
+  </body>
+</html>
