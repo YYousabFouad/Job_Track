@@ -113,13 +113,11 @@ const extractCardsFromDOM = function () {
       appDetails[0]?.textContent.split("Location:")[1]?.trim() || "";
     const dateApplied =
       appDetails[1]?.textContent.split("Applied:")[1]?.trim() || "";
-    const salary =
-      appDetails[2]?.textContent.split("Salary:")[1]?.trim() || "";
+    const salary = appDetails[2]?.textContent.split("Salary:")[1]?.trim() || "";
     const contact =
       appDetails[3]?.textContent.split("Contact:")[1]?.trim() || "";
     const notes = card.querySelector(".card-notes")?.textContent.trim() || "";
-    const jobUrl =
-      card.querySelector(".btn-link")?.getAttribute("href") || "";
+    const jobUrl = card.querySelector(".btn-link")?.getAttribute("href") || "";
 
     extracted.push({
       id,
@@ -460,7 +458,8 @@ const updateDashboard = function () {
 
     if (status === "applied") appliedCount++;
     else if (status === "screening") screeningCount++;
-    else if (status === "interview" || status === "interviews") interviewCount++;
+    else if (status === "interview" || status === "interviews")
+      interviewCount++;
     else if (status === "offer" || status === "offers") offerCount++;
     else if (status === "rejected") rejectedCount++;
   });
@@ -727,11 +726,11 @@ document.querySelector("#cardsGrid").addEventListener("click", (e) => {
       }
     }
 
-    const salary =
-      appDetails[2]?.textContent.split("Salary:")[1]?.trim() || "";
+    const salary = appDetails[2]?.textContent.split("Salary:")[1]?.trim() || "";
     const contact =
       appDetails[3]?.textContent.split("Contact:")[1]?.trim() || "";
-    const notes = appCard.querySelector(".card-notes")?.textContent.trim() || "";
+    const notes =
+      appCard.querySelector(".card-notes")?.textContent.trim() || "";
     const jobURL =
       appCard.querySelector(".btn-link")?.getAttribute("href") || "";
 
